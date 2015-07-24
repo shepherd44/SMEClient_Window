@@ -7,7 +7,7 @@
     <ProjectGuid>{974B5C4F-E77E-4FA1-AB6C-A5B9B857FEA6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SMEClient</RootNamespace>
+    <RootNamespace>SME</RootNamespace>
     <AssemblyName>SMEClient</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -45,6 +45,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SMESender.cs" />
     <Compile Include="XMLHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\breakpadWrapper\breakpadWrapper.vcxproj">
+      <Project>{f3fc2a53-6bf6-4aaa-8f9f-8a585bd36fde}</Project>
+      <Name>breakpadWrapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

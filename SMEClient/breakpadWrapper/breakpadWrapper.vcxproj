@@ -11,10 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{1FD816E4-78B0-4F14-8B44-CC19B288DA13}</ProjectGuid>
+    <ProjectGuid>{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}</ProjectGuid>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <Keyword>ManagedCProj</Keyword>
-    <RootNamespace>managedCal</RootNamespace>
+    <RootNamespace>breakpadWrapper</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -43,6 +43,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IntDir>$(OutDir)obj\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -53,10 +54,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <AdditionalIncludeDirectories>..\..\google-breakpad\src\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
+      <AdditionalLibraryDirectories>$(OutDir)\lib</AdditionalLibraryDirectories>
+      <OutputFile>$(OutDir)\$(ProjectName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -64,26 +68,23 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <AdditionalIncludeDirectories>..\..\google-breakpad\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
+      <OutputFile>$(OutDir)lib\$(ProjectName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\UnmanagedCal\AddCal.h" />
-    <ClInclude Include="managedCal.h" />
+    <ClInclude Include="..\windows\handler\exception_handler.h" />
+    <ClInclude Include="breakpadWrapper.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="managedCal.cpp" />
+    <ClCompile Include="breakpadWrapper.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -99,8 +100,17 @@
     <Image Include="app.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UnmanagedCal\UnmanagedCal.vcxproj">
-      <Project>{a616d106-6589-4e6d-82ff-45555530f2b2}</Project>
+    <ProjectReference Include="..\..\google-breakpad\src\client\windows\common.vcxproj">
+      <Project>{4ed48541-4f88-bea7-7f51-2f7d869ef242}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\google-breakpad\src\client\windows\crash_generation\crash_generation_client.vcxproj">
+      <Project>{5dae8fcf-9af1-2a1d-c419-0c3fc6d93c7f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\google-breakpad\src\client\windows\crash_generation\crash_generation_server.vcxproj">
+      <Project>{b984a5d6-73f4-ef0a-6117-f9116594ebb2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\google-breakpad\src\client\windows\handler\exception_handler.vcxproj">
+      <Project>{d2921270-f22b-9e45-d11b-a9a9f381909f}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using SME;
+using google_breakpad;
 
 namespace testConsole
 {

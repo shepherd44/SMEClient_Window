@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using google_breakpad;
 
 namespace SME
@@ -35,7 +34,7 @@ namespace SME
 
 
         }
-
+        
         // 예외처리 이벤트가 넘어오면 할 일들을 해 주는 함수
         static void UnHandledExceptionHandler(object sender, UnhandledExceptionEventArgs args)
         {

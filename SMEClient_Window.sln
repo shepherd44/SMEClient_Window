@@ -35,6 +35,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "crash_gen_testserver", "goo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMEClient", "SMEClient\SMEClient\SMEClient.csproj", "{974B5C4F-E77E-4FA1-AB6C-A5B9B857FEA6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "breakpadWrapper", "SMEClient\breakpadWrapper\breakpadWrapper.vcxproj", "{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -249,6 +251,24 @@ Global
 		{974B5C4F-E77E-4FA1-AB6C-A5B9B857FEA6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{974B5C4F-E77E-4FA1-AB6C-A5B9B857FEA6}.Release|Win32.ActiveCfg = Release|Any CPU
 		{974B5C4F-E77E-4FA1-AB6C-A5B9B857FEA6}.Release|x64.ActiveCfg = Release|Any CPU
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Debug|Win32.Build.0 = Debug|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Debug|x64.ActiveCfg = Debug|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Purify|Any CPU.ActiveCfg = Release|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Purify|Mixed Platforms.ActiveCfg = Release|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Purify|Mixed Platforms.Build.0 = Release|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Purify|Win32.ActiveCfg = Release|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Purify|Win32.Build.0 = Release|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Purify|x64.ActiveCfg = Release|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Release|Any CPU.ActiveCfg = Release|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Release|Win32.ActiveCfg = Release|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Release|Win32.Build.0 = Release|Win32
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -267,5 +287,6 @@ Global
 		{38EE9A98-7923-4AF8-A395-81DF28821C0A} = {8FEAABAE-FA34-4ECB-A5EC-C93555F6F1D0}
 		{D3976B05-5C04-4EF6-BA73-0BDF29AC5BCC} = {8FEAABAE-FA34-4ECB-A5EC-C93555F6F1D0}
 		{974B5C4F-E77E-4FA1-AB6C-A5B9B857FEA6} = {0C77249C-11AA-4B20-B24E-9B1BB4F6E4C6}
+		{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE} = {0C77249C-11AA-4B20-B24E-9B1BB4F6E4C6}
 	EndGlobalSection
 EndGlobal

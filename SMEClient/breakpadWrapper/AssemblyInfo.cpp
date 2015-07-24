@@ -11,11 +11,11 @@ using namespace System::Security::Permissions;
 // 어셈블리와 관련된 정보를 수정하려면
 // 이 특성 값을 변경하십시오.
 //
-[assembly:AssemblyTitleAttribute(L"managedCal")];
+[assembly:AssemblyTitleAttribute(L"breakpadWrapper")];
 [assembly:AssemblyDescriptionAttribute(L"")];
 [assembly:AssemblyConfigurationAttribute(L"")];
 [assembly:AssemblyCompanyAttribute(L"")];
-[assembly:AssemblyProductAttribute(L"managedCal")];
+[assembly:AssemblyProductAttribute(L"breakpadWrapper")];
 [assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2015")];
 [assembly:AssemblyTrademarkAttribute(L"")];
 [assembly:AssemblyCultureAttribute(L"")];

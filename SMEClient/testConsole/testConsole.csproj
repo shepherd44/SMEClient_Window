@@ -47,6 +47,16 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\breakpadWrapper\breakpadWrapper.vcxproj">
+      <Project>{f3fc2a53-6bf6-4aaa-8f9f-8a585bd36fde}</Project>
+      <Name>breakpadWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SMEClient\SMEClient.csproj">
+      <Project>{974b5c4f-e77e-4fa1-ab6c-a5b9b857fea6}</Project>
+      <Name>SMEClient</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

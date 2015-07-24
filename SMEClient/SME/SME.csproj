@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5547EAD5-DA9D-4A13-86CF-D3EB491BBAED}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{5F568421-1D13-436D-B292-C029D43565DA}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CSConsole</RootNamespace>
-    <AssemblyName>CSConsole</AssemblyName>
+    <RootNamespace>SME</RootNamespace>
+    <AssemblyName>sme_client</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,24 +39,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HttpHelper.cs" />
-    <Compile Include="SMECollector.cs" />
-    <Compile Include="SMESender.cs" />
-    <Compile Include="Utility.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Sender.cs" />
+    <Compile Include="SMEClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\managedCal\managedCal.vcxproj">
-      <Project>{1fd816e4-78b0-4f14-8b44-cc19b288da13}</Project>
-      <Name>managedCal</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\testWrap\testWrap.vcxproj">
-      <Project>{46b9885f-f572-41ca-a722-f74c8a29549f}</Project>
-      <Name>testWrap</Name>
+    <ProjectReference Include="..\breakpadWrapper\breakpadWrapper.vcxproj">
+      <Project>{f3fc2a53-6bf6-4aaa-8f9f-8a585bd36fde}</Project>
+      <Name>breakpadWrapper</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

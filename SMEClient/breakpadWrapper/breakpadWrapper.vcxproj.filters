@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="testWrap.h">
+    <ClInclude Include="breakpadWrapper.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Stdafx.h">
@@ -24,9 +24,12 @@
     <ClInclude Include="resource.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="..\windows\handler\exception_handler.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="testWrap.cpp">
+    <ClCompile Include="breakpadWrapper.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="AssemblyInfo.cpp">
