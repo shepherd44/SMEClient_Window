@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Diagnostics;
+using System.Collections;
 
 namespace SME
 {
@@ -43,23 +44,44 @@ namespace SME
             List<string> ErrorInfoList = new List<string>();
 
         }
-        public SMECollector() { }
-        private static SMESystemInformation m_sysInfo;
+        public SMECollector()
+        {
+        }
+
+        //
+        private static SMESystemInformation m_sysInfo = new SMESystemInformation();
     }
+
+    //현재 system의 정보 수집
     class SMESystemInformation
     {
-        string m_OS;
-        string m_OSVersion;
-        string m_CLRVersion;
+        PlatformID m_platformID;
+        string m_servicePack;
+        Version m_OSVersion;
+        Version m_CLRVersion;
         bool m_Is64bitOS;
         bool m_Is64bitProcess;
-        string m_SystemPageSize;
-        string m_TickCount;
+        int m_SystemPageSize;
+        int m_TickCount;
 
+        public SMESystemInformation()
+        {
+            OperatingSystem os = Environment.OSVersion;
+
+            m_platformID = os.Platform;
+            m_OSVersion = os.Version;
+            m_CLRVersion = Environment.Version;
+            m_servicePack = os.ServicePack;
+            m_Is64bitOS = Environment.Is64BitOperatingSystem;
+            m_Is64bitProcess = Environment.Is64BitProcess;
+            m_SystemPageSize = Environment.SystemPageSize;
+            m_TickCount = Environment.TickCount;
+        }
         public string ToXMLString() { string temp = ""; return temp; }
         public string ToString() { string temp = ""; return temp; }
     }
     
+    // 현재 프로그램의 정보 수집
     class SMEProjectInformation
     {
         //projectName
@@ -67,53 +89,60 @@ namespace SME
         //projectVersion
         string m_Version;
 
+        public SMEProjectInformation(string name, string version)
+        {
+            m_Name = name;
+            m_Version = version;
+        }
         public string ToXMLString() { string temp = ""; return temp; }
         public string ToString() { string temp = m_Name+m_Version; return temp; }
     }
 
-    /// <summary>
-    /// Exception 정보 저장
-    /// </summary>
+    // 발생한 예외 정보 수집
     class SMEExceptionInformation
     {
         string m_exName;
-        public string ExName
-        {
-            get { return m_exName; }
-            set { m_exName = value; }
-        }
-        string m_exData;
-        public string ExData
-        {
-            get { return m_exData; }
-            set { m_exData = value; }
-        }
+        IDictionary m_exData;
         string m_exHelpLink;
-        public string ExHelpLink
-        {
-            get { return m_exHelpLink; }
-            set { m_exHelpLink = value; }
-        }
-        string m_exHResult;
-        public string ExHResult
-        {
-            get { return m_exHResult; }
-            set { m_exHResult = value; }
-        }
+        int m_exHResult;
         string m_exMessage;
-        public string ExMessage
+        
+        public SMEExceptionInformation(Exception exception)
         {
-            get { return m_exMessage; }
-            set { m_exMessage = value; }
+            m_exName = exception.GetType().ToString();
+            m_exData = exception.Data;
+            m_exHelpLink = exception.HelpLink;
+            m_exHResult = exception.HResult;
+            m_exMessage = exception.Message;
         }
-
         public string ToXMLString() { string temp = ""; return temp; }
         public string ToString() { string temp = ""; return temp; }
     }
 
+    //Error 발생 당시 CallStack 정보 저장
     class SMECallstackInformation
     {
-        public string ToXMLString() { string temp = ""; return temp; }
-        public string ToString() { string temp = ""; return temp; }
+        List<string> m_listCallstack = new List<string>();
+
+        public void AddCallStack(string callstack) { m_listCallstack.Add(callstack); }
+
+        public SMECallstackInformation()
+        {
+
+        }
+        public Byte[] ToByteArray() { return null; }
+        public string ToXMLString() 
+        {
+            string temp = ""; return temp; }
+        public string ToString()
+        {
+            string temp = "";
+            foreach (string item in m_listCallstack)
+	        {
+		        temp += item;
+                temp += "\n";
+	        }
+            return temp;
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace SME
             m_currentDomain = currentDomain;
 
             //UnhandledException 이벤트를 추가한다.
-            m_currentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnHandledExceptionHandler);
+            m_currentDomain.UnhandledException += new UnhandledExceptionEventHandler(SMEUnHandledExceptionHandler);
 
             //useCpp가 TRUE일 때, google_breakpad.breakpadWrapper 객체생성
             m_useCpp = useCpp;
@@ -37,7 +37,7 @@ namespace SME
         }
 
         // 예외처리 이벤트가 넘어오면 할 일들을 해 주는 함수
-        static void UnHandledExceptionHandler(object sender, UnhandledExceptionEventArgs args)
+        static void SMEUnHandledExceptionHandler(object sender, UnhandledExceptionEventArgs args)
         {
             //예외처리 조합 SMECollector
 
