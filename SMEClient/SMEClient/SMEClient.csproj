@@ -41,8 +41,12 @@
   <ItemGroup>
     <Compile Include="HttpHelper.cs" />
     <Compile Include="SMEClient.cs" />
-    <Compile Include="SMECollector.cs" />
+    <Compile Include="SMECollector\SMECallstackInformation.cs" />
+    <Compile Include="SMECollector\SMECollector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SMECollector\SMEExceptionInformation.cs" />
+    <Compile Include="SMECollector\SMEProjectInformation.cs" />
+    <Compile Include="SMECollector\SMESystemInformation.cs" />
     <Compile Include="SMESender.cs" />
     <Compile Include="XMLHelper.cs" />
   </ItemGroup>

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SME
 {
-    class XMLHelper
+    public class XMLHelper
     {
-        public void CreateXML() { }
+        public static void CreateXML() { }
     }
 }

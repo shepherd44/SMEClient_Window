@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 using google_breakpad;
 
@@ -15,6 +16,8 @@ namespace SME
         private bool m_useCpp; // 프로세스 안에 Cpp를 사용하면 true
         private String m_APIKey; // Server에서 프로젝트를 구별해 줄 APIKey
         private breakpadWrapper m_Wrapper;
+        static private SMECollector m_SMECollector = null;
+
         //SMEClient 생성자, 호출해 준 프로세스의 기본 앱도메인을 받아온다.
         public SMEClient(AppDomain currentDomain, bool useCpp, String APIKey)
         {
@@ -39,25 +42,17 @@ namespace SME
         // 예외처리 이벤트가 넘어오면 할 일들을 해 주는 함수
         static void SMEUnHandledExceptionHandler(object sender, UnhandledExceptionEventArgs args)
         {
+            Exception exception = (Exception)args.ExceptionObject;
             //예외처리 조합 SMECollector
-
+            m_SMECollector = new SMECollector(exception);
+            
             //전송 Sender
-
-
-            #region StackTrace,Message Out
-            ///StackTrace st = new StackTrace(true);
-            ///StackFrame[] stf = st.GetFrames();
-            ///foreach (var r in stf)
-            ///{
-            ///    Console.WriteLine("Filename: {0} Method: {1} Line: {2} Column: {3}  ",
-            ///    r.GetFileName(), r.GetMethod(), r.GetFileLineNumber(),
-            ///    r.GetFileColumnNumber());   // write method name
-            ///}
-            ///Exception e = (Exception)args.ExceptionObject;
-            ///Console.WriteLine("MyHandler caught : " + e.Message);
-            ///Console.WriteLine("Runtime terminating : {0}", args.IsTerminating);
+            #region testRegion
+            Thread th = new Thread(new ThreadStart(m_SMECollector.ConsoleTest));
+            th.Start();
+            //m_SMECollector.ConsoleTest();
             #endregion
-
+            
         }
 
     }

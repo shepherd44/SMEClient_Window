@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using System.Diagnostics;
+
 using SME;
 using google_breakpad;
 using managedCal;
@@ -14,14 +16,41 @@ namespace testConsole
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("-------------------------------------------");
+            Console.WriteLine("test Console");
+            Console.WriteLine("-------------------------------------------");
+            SME.SMEClient smeclient = new SMEClient(AppDomain.CurrentDomain, false, "test key");
+
+            //testclass.stacktracetest();
             //testclass.msdnenvtestcode();
             //testclass.systeminfotest();
-            testclass.exceptioninfotest(new NullReferenceException());
+            //testclass.exceptioninfotest(new NullReferenceException());
+            testclass.UnhandleExceptiontest();
+            
             Console.WriteLine();
         }
     }
     class testclass
     {
+        public static void UnhandleExceptiontest()
+        {
+            throw new NullReferenceException();
+        }
+        public static void stacktracetest()
+        {
+            
+            Console.WriteLine(Environment.StackTrace);
+
+            StackTrace st = new StackTrace(true);
+            StackFrame[] sfs = st.GetFrames();
+            foreach (StackFrame item in sfs)
+            {
+                
+                Console.WriteLine(item.GetMethod().Name);
+                Console.WriteLine(item.GetFileName());
+                Console.WriteLine(item.ToString());
+            }
+        }
         public static void msdnenvtestcode()
         {
             String str;
@@ -93,7 +122,6 @@ namespace testConsole
             String[] drives = Environment.GetLogicalDrives();
             Console.WriteLine("GetLogicalDrives: {0}", String.Join(", ", drives));
         }
-        
         public static void systeminfotest()
         {
             PlatformID m_platformID;
@@ -142,7 +170,21 @@ namespace testConsole
                 Console.WriteLine("{0} : {1}", item.Key, item.Value);
             }
 
+            Console.WriteLine(exception.StackTrace);
 
+            try
+            {
+                throw new NullReferenceException();
+            }
+            catch (Exception e)
+            {
+                string exceptionstack = e.StackTrace;
+                char[] charray = e.StackTrace.ToCharArray();
+                string[] seperators = new string[] { "   위치: ", "파일 ", ":줄 " };
+                string[] array;
+                array = exceptionstack.Split(seperators, StringSplitOptions.None);
+                Console.WriteLine(e.StackTrace);
+            }
         }
         public static void breakpadWrappertest()
         {
