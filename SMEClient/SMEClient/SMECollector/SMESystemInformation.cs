@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace SME
 {
     //현재 system의 정보 수집
-    class SMESystemInformation
+    public class SMESystemInformation
     {
         PlatformID m_platformID;
         string m_servicePack;
@@ -31,7 +32,21 @@ namespace SME
             m_SystemPageSize = Environment.SystemPageSize;
             m_TickCount = Environment.TickCount;
         }
-        public string ToXMLString() { string temp = ""; return temp; }
+
+        public XElement ToXElement() 
+        {
+            XElement xmldoc = new XElement("SystemInformation",
+                                new XElement("PlatformID", m_platformID.ToString()),
+                                new XElement("ServicePack", m_servicePack),
+                                new XElement("OSVersion", m_OSVersion.ToString()),
+                                new XElement("CLRVersion", m_CLRVersion.ToString()),
+                                new XElement("Is64BitOS", m_Is64bitOS.ToString()),
+                                new XElement("Is64BitProcess", m_Is64bitProcess.ToString()),
+                                new XElement("PageSize", m_SystemPageSize.ToString()),
+                                new XElement("TickCount", m_TickCount.ToString()));
+            return xmldoc;
+        }
+
         override public string ToString()
         {
             string temp = "System Information";

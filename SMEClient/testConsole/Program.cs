@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Diagnostics;
+using System.Xml;
+using System.Xml.Linq;
 
 using SME;
 using google_breakpad;
@@ -25,14 +27,15 @@ namespace testConsole
             //testclass.msdnenvtestcode();
             //testclass.systeminfotest();
             //testclass.exceptioninfotest(new NullReferenceException());
-            testclass.UnhandleExceptiontest();
-            
+            testclass.UnhandleExceptionthrow();
+            //testclass.xmlwritertest();
+            //testclass.XMLtest();
             Console.WriteLine();
         }
     }
     class testclass
     {
-        public static void UnhandleExceptiontest()
+        public static void UnhandleExceptionthrow()
         {
             throw new NullReferenceException();
         }
@@ -195,6 +198,23 @@ namespace testConsole
             error_gen.Add(1, 2);
             // write minidump
             google_breakpad.breakpadWrapper.WriteMinidump();
+        }
+        public static void XMLtest()
+        {
+            XmlDocument xml = new XmlDocument();
+            XElement doc = new XElement("Root");
+            doc.Add(new XElement("ProjectInfo", 
+                        new XElement("Name","test"), 
+                        new XElement("Version", "test1")));
+            doc.Save("test.xml");
+        }
+        public static void xmlwritertest()
+        {
+            SMEXMLWriter xml = new SMEXMLWriter(new SMEProjectInformation("", null),
+                new SMESystemInformation(),
+                new SMEExceptionInformation(new NullReferenceException()),
+                new SMECallstackInformation(new NullReferenceException()));
+            xml.SaveToFile("C:\\Dumps\\CS.xml");
         }
     }
 }

@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Xml.Linq;
 
 namespace SME
 {
     // Error 발생 당시 CallStack 정보 저장
     // string 단위로 method.filename.line
-    class SMECallstackInformation
+    public class SMECallstackInformation
     {
         List<SMECallStack> m_listCallstack = new List<SMECallStack>();
 
@@ -25,12 +26,16 @@ namespace SME
                 AddCallStack(smecallstack);
             }
             AddCallStack(new SMECallStack(exception));
-            
         }
-        public Byte[] ToByteArray() { return null; }
-        public string ToXMLString()
+        public XElement ToXElement()
         {
-            string temp = ""; return temp;
+            XElement xmldoc = new XElement("CallStackInformation");
+            for (int i = 0; i < m_listCallstack.Count; i++)
+            {
+                SMECallStack temp = m_listCallstack[i];
+                xmldoc.Add(temp.ToXElement());
+            }
+            return xmldoc;
         }
         override public string ToString()
         {
@@ -44,9 +49,10 @@ namespace SME
         }
     }
 
-    class SMECallStack
+    public class SMECallStack
     {
         string m_method;
+        
         string m_file;
         int m_line;
         public SMECallStack(string method, string file, int line)
@@ -61,15 +67,33 @@ namespace SME
             m_file = stackframe.GetFileName();
             m_line = stackframe.GetFileLineNumber();
         }
+
+        // 생성자
         public SMECallStack(Exception exception)
         {
             string exceptionstack = exception.StackTrace;
+            if(exceptionstack == null)
+            {
+                m_method = "null";
+                m_file = "null";
+                m_line = 0;
+                return;
+            }
             string[] seperators = new string[] { " 위치: ", "파일 ", ":줄 " };
             string[] array;
             array = exceptionstack.Split(seperators, StringSplitOptions.None);
             m_method = array[1];
             m_file = array[2];
             m_line = int.Parse(array[3]);
+        }
+        public XElement ToXElement()
+        {
+            XElement xmldoc = new XElement("Stack",
+                                    new XElement("Method", m_method),
+                                    new XElement("File", m_file),
+                                    new XElement("Line", m_line.ToString()
+                                  ));
+            return xmldoc;
         }
         public override string ToString()
         {

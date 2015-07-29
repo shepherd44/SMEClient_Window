@@ -22,21 +22,16 @@ namespace SME
         public SMEClient(AppDomain currentDomain, bool useCpp, String APIKey)
         {
             m_currentDomain = currentDomain;
-
             //UnhandledException 이벤트를 추가한다.
             m_currentDomain.UnhandledException += new UnhandledExceptionEventHandler(SMEUnHandledExceptionHandler);
-
             //useCpp가 TRUE일 때, google_breakpad.breakpadWrapper 객체생성
             m_useCpp = useCpp;
             if (m_useCpp)
             {
                 m_Wrapper = new breakpadWrapper();
             }
-
             //Server에 전송할 APIKey
             m_APIKey = APIKey;
-
-
         }
 
         // 예외처리 이벤트가 넘어오면 할 일들을 해 주는 함수
@@ -52,8 +47,6 @@ namespace SME
             th.Start();
             //m_SMECollector.ConsoleTest();
             #endregion
-            
         }
-
     }
 }
