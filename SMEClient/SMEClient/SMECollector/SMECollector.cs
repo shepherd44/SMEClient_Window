@@ -61,7 +61,7 @@ namespace SME
             CollectProjectInfo();
             CollectExceptionInfo(exception);
             CollectCallStack(exception);
-            // 
+            // test Console
             Thread th = new Thread(new ThreadStart(ConsoleTest));
             th.Start();
 
