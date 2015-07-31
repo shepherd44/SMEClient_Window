@@ -23,21 +23,31 @@ namespace testConsole
             Console.WriteLine("-------------------------------------------");
             SME.SMEClient smeclient = new SMEClient(AppDomain.CurrentDomain, false, "test key");
 
+            //exception throw
+            //testclass.NullReferenceExceptionThrow();
+            //testclass.UnhandleExceptionthrow();
+            
             //testclass.stacktracetest();
             //testclass.msdnenvtestcode();
             //testclass.systeminfotest();
             //testclass.exceptioninfotest(new NullReferenceException());
-            testclass.UnhandleExceptionthrow();
+            
             //testclass.xmlwritertest();
+            testclass.xmlwriterloadtest();
             //testclass.XMLtest();
             Console.WriteLine();
         }
     }
     class testclass
     {
-        public static void UnhandleExceptionthrow()
+        public static void NullReferenceExceptionThrow()
         {
             throw new NullReferenceException();
+        }
+        public static void UnhandleExceptionthrow()
+        {
+            string str = "100";
+            str.PadLeft(1000,'1');
         }
         public static void stacktracetest()
         {
@@ -201,11 +211,17 @@ namespace testConsole
         }
         public static void XMLtest()
         {
-            XmlDocument xml = new XmlDocument();
+            XDocument xmldoc = new XDocument();
             XElement doc = new XElement("Root");
+            xmldoc.Add(doc);
             doc.Add(new XElement("ProjectInfo", 
                         new XElement("Name","test"), 
                         new XElement("Version", "test1")));
+            
+            foreach (XElement item in doc.Nodes())
+            {
+                Console.WriteLine(item.Name);
+            }
             doc.Save("test.xml");
         }
         public static void xmlwritertest()
@@ -214,7 +230,12 @@ namespace testConsole
                 new SMESystemInformation(),
                 new SMEExceptionInformation(new NullReferenceException()),
                 new SMECallstackInformation(new NullReferenceException()));
-            xml.SaveToFile("C:\\Dumps\\CS.xml");
+            xml.SaveToXML("C:\\Dumps\\CS.xml");
+        }
+        public static void xmlwriterloadtest()
+        {
+            SMEXMLWriter xml = new SMEXMLWriter();
+            xml.LoadFromXML("C:\\Dumps\\CS.xml");
         }
     }
 }

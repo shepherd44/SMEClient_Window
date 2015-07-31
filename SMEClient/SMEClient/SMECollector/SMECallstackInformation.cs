@@ -25,7 +25,9 @@ namespace SME
                 SMECallStack smecallstack = new SMECallStack(item);
                 AddCallStack(smecallstack);
             }
-            AddCallStack(new SMECallStack(exception));
+            List<SMECallStack> listtemp = SMECallStack.ParseFromException(exception);
+            if(listtemp != null)
+                m_listCallstack.AddRange(listtemp);
         }
         public XElement ToXElement()
         {
@@ -52,9 +54,40 @@ namespace SME
     public class SMECallStack
     {
         string m_method;
-        
         string m_file;
         int m_line;
+        
+        public static List<SMECallStack> ParseFromException(Exception exception)
+        {
+            List<SMECallStack> callstacklist = new List<SMECallStack>();
+            string exceptionstack = exception.StackTrace;
+            
+            if (exceptionstack == null)
+                return null;
+            // stacktrace string split seperators
+            string[] location_seperator = new string[] { " 위치: " };
+            string[] file_seperater = new string[] { " 파일 ", " 줄 "};
+            string[] locationarray = null;
+            string[] filearray = null;
+            // parse
+            locationarray = exceptionstack.Split(location_seperator, StringSplitOptions.None);
+            for (int i = 1; i < locationarray.Length; i++)
+            {
+                filearray = locationarray[i].Split(file_seperater, StringSplitOptions.None);
+                if(filearray.Length == 1)
+                    callstacklist.Add(new SMECallStack(filearray[0],"",0));
+                else if(filearray.Length == 2)
+                    callstacklist.Add(new SMECallStack(filearray[0],
+                                                       filearray[1],
+                                                       0));
+                else if(filearray.Length == 3)
+                    callstacklist.Add(new SMECallStack(filearray[0],
+                                                       filearray[1],
+                                                       int.Parse(filearray[2])));
+            }
+            return callstacklist;
+        }
+        //생성자
         public SMECallStack(string method, string file, int line)
         {
             m_method = method;
@@ -67,8 +100,6 @@ namespace SME
             m_file = stackframe.GetFileName();
             m_line = stackframe.GetFileLineNumber();
         }
-
-        // 생성자
         public SMECallStack(Exception exception)
         {
             string exceptionstack = exception.StackTrace;
@@ -79,9 +110,12 @@ namespace SME
                 m_line = 0;
                 return;
             }
-            string[] seperators = new string[] { " 위치: ", "파일 ", ":줄 " };
+            string[] location_seperator = new string[] { " 위치: "};
+            string[] file_seperater = new string[] { " 파일 " };
+            string[] line_seperater = new string[] { "줄 " };
             string[] array;
-            array = exceptionstack.Split(seperators, StringSplitOptions.None);
+            array = exceptionstack.Split(location_seperator, StringSplitOptions.None);
+
             m_method = array[1];
             m_file = array[2];
             m_line = int.Parse(array[3]);

@@ -38,7 +38,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
@@ -57,10 +56,16 @@ namespace SME
         public void CollectErrorInformation(object e)
         {
             m_CollectSemaphore = new Semaphore(0, 1);
+            // 작업 시작
             Exception exception = (Exception)e;
             CollectProjectInfo();
-            CollectCallStack(exception);
             CollectExceptionInfo(exception);
+            CollectCallStack(exception);
+            // 
+            Thread th = new Thread(new ThreadStart(ConsoleTest));
+            th.Start();
+
+            // 작업 끝
             m_CollectSemaphore.Release(1);
         }
         private void CollectCallStack(Exception exception)
@@ -79,24 +84,24 @@ namespace SME
             m_exceptioninfo = new SMEExceptionInformation(exception);
         }
 
-        public void XMLSave(string path)
+        public void SaveToXML(string path)
         {
             m_CollectSemaphore.WaitOne();
             m_smexmlwriter = new SMEXMLWriter(m_projectinfo,
                                                 m_sysInfo,
                                                 m_exceptioninfo,
                                                 m_callstackinfo);
-            m_smexmlwriter.SaveToFile(path);
+            m_smexmlwriter.SaveToXML(path);
             m_CollectSemaphore.Release(1);
         }
-        public void XMLSave()
+        public void SaveToXML()
         {
             m_CollectSemaphore.WaitOne();
             m_smexmlwriter = new SMEXMLWriter(m_projectinfo,
                                                 m_sysInfo,
                                                 m_exceptioninfo,
                                                 m_callstackinfo);
-            m_smexmlwriter.SaveToFile(k_XMLfilepath);
+            m_smexmlwriter.SaveToXML(k_XMLfilepath);
             m_CollectSemaphore.Release(1);
         }
 
@@ -105,7 +110,9 @@ namespace SME
         public SMECollector(Exception exception)
         {
             m_CollectThread = new Thread(new ParameterizedThreadStart(CollectErrorInformation));
-            m_SaveXMLThread = new Thread(new ThreadStart(XMLSave));
+            m_CollectThread.Name = "CollectThread";
+            m_SaveXMLThread = new Thread(new ThreadStart(SaveToXML));
+            m_SaveXMLThread.Name = "SaveThread";
             m_CollectThread.Start(exception);
             m_SaveXMLThread.Start();
         }
@@ -132,7 +139,8 @@ namespace SME
         private SMEXMLWriter m_smexmlwriter = null;
         private Thread m_SaveXMLThread = null;
         
-        // 상수
+        // 덤프xml파일 저장 위치
+        // 파일명 날짜로 변경 필요
         const string k_XMLfilepath = "C:\\Dumps\\CS.xml";
 
         public void ConsoleTest()

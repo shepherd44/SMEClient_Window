@@ -13,11 +13,11 @@ namespace SME
         //projectName
         string m_Name;
         //projectVersion
-        Version m_Version;
+        Version m_Version = null;
 
         public SMEProjectInformation(string name, Version version)
         {
-            m_Name = name;
+            m_Name = name != null ? name : "";
             m_Version = version != null ? version : new Version("0.0");
         }
         public XElement ToXElement()

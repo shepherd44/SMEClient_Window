@@ -38,14 +38,13 @@ namespace SME
         static void SMEUnHandledExceptionHandler(object sender, UnhandledExceptionEventArgs args)
         {
             Exception exception = (Exception)args.ExceptionObject;
+            
             //예외처리 조합 SMECollector
             m_SMECollector = new SMECollector(exception);
             
             //전송 Sender
-            #region testRegion
-            Thread th = new Thread(new ThreadStart(m_SMECollector.ConsoleTest));
-            th.Start();
-            //m_SMECollector.ConsoleTest();
+            #region SendRegion
+            
             #endregion
         }
     }

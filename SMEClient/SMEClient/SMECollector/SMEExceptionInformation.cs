@@ -11,20 +11,21 @@ namespace SME
     // 발생한 예외 정보 수집
     public class SMEExceptionInformation
     {
-        string m_exName;
-        IDictionary m_exData;
-        string m_exHelpLink;
-        int m_exHResult;
-        string m_exMessage;
+        string m_exName = null;
+        IDictionary m_exData = null;
+        string m_exHelpLink = null;
+        int m_exHResult = 0;
+        string m_exMessage = null;
 
         public SMEExceptionInformation(Exception exception)
         {
             m_exName = exception.GetType().ToString();
             m_exData = exception.Data;
-            m_exHelpLink = exception.HelpLink;
+            m_exHelpLink = exception.HelpLink != null ? exception.HelpLink : "";
             m_exHResult = exception.HResult;
-            m_exMessage = exception.Message;
+            m_exMessage = exception.Message != null ? exception.Message : "";
         }
+
         public XElement ToXElement()
         {
             XElement xmldoc = new XElement("ExeptionInformation",
@@ -36,21 +37,26 @@ namespace SME
                                 );
             return xmldoc;
         }
+
         override public string ToString()
         {
 
             string temp = "Exception Information\n";
             temp += ":Name:"+m_exName;
             temp += ":Data:";
-            foreach (DictionaryEntry item in m_exData)
+            if (m_exData != null)
             {
-                temp += ":" + item.Key + ":" + item.Value;
+                foreach (DictionaryEntry item in m_exData)
+                {
+                    temp += ":" + item.Key + ":" + item.Value;
+                }
             }
             temp += ":Hresult:" + m_exHResult;
             temp += ":HelpLink:" + m_exHelpLink;
             temp += ":Message:" + m_exMessage;
             return temp;
         }
+
         XElement DataToXElement()
         {
             XElement xmldoc = new XElement("Data");
