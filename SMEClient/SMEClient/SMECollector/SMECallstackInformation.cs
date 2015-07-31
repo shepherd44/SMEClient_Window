@@ -100,26 +100,6 @@ namespace SME
             m_file = stackframe.GetFileName();
             m_line = stackframe.GetFileLineNumber();
         }
-        public SMECallStack(Exception exception)
-        {
-            string exceptionstack = exception.StackTrace;
-            if(exceptionstack == null)
-            {
-                m_method = "null";
-                m_file = "null";
-                m_line = 0;
-                return;
-            }
-            string[] location_seperator = new string[] { " 위치: "};
-            string[] file_seperater = new string[] { " 파일 " };
-            string[] line_seperater = new string[] { "줄 " };
-            string[] array;
-            array = exceptionstack.Split(location_seperator, StringSplitOptions.None);
-
-            m_method = array[1];
-            m_file = array[2];
-            m_line = int.Parse(array[3]);
-        }
         public XElement ToXElement()
         {
             XElement xmldoc = new XElement("Stack",
