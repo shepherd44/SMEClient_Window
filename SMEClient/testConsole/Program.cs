@@ -235,7 +235,7 @@ namespace testConsole
         public static void xmlwriterloadtest()
         {
             SMEXMLWriter xml = new SMEXMLWriter();
-            xml.LoadFromXML("C:\\Dumps\\CS.xml");
+            xml.LoadFromXML("C:\\Dumps\\CS1.xml");
         }
     }
 }

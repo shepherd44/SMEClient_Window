@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Xml.Linq;
+using System.Reflection;
 
 namespace SME
 {
@@ -14,8 +15,9 @@ namespace SME
     {
         List<SMECallStack> m_listCallstack = new List<SMECallStack>();
 
-        public void AddCallStack(SMECallStack smecallstack) { m_listCallstack.Add(smecallstack); }
+        private void AddCallStack(SMECallStack smecallstack) { m_listCallstack.Add(smecallstack); }
         
+        // 생성자
         public SMECallstackInformation(Exception exception)
         {
             StackTrace stacktrace = new StackTrace(true);
@@ -29,6 +31,7 @@ namespace SME
             if(listtemp != null)
                 m_listCallstack.AddRange(listtemp);
         }
+        
         public XElement ToXElement()
         {
             XElement xmldoc = new XElement("CallStackInformation");
@@ -39,6 +42,7 @@ namespace SME
             }
             return xmldoc;
         }
+
         override public string ToString()
         {
             string temp = "CallStackInformation\n";
@@ -66,7 +70,7 @@ namespace SME
                 return null;
             // stacktrace string split seperators
             string[] location_seperator = new string[] { " 위치: " };
-            string[] file_seperater = new string[] { " 파일 ", " 줄 "};
+            string[] file_seperater = new string[] { " 파일 ", ":줄 "};
             string[] locationarray = null;
             string[] filearray = null;
             // parse
@@ -96,7 +100,19 @@ namespace SME
         }
         public SMECallStack(StackFrame stackframe)
         {
-            m_method = stackframe.GetMethod().Name;
+            MethodBase method = stackframe.GetMethod();
+            Type type = method.DeclaringType;
+            m_method = type.ToString();
+            m_method += "." + method.Name +"(";
+            ParameterInfo[] parameters =  method.GetParameters();
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                m_method += parameters[i].ParameterType.Name + " ";
+                m_method += parameters[i].Name;
+                if (i < parameters.Length - 1)
+                    m_method += ",";
+            }
+            m_method += ")";
             m_file = stackframe.GetFileName();
             m_line = stackframe.GetFileLineNumber();
         }
