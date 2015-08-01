@@ -78,13 +78,17 @@ namespace SME
             for (int i = 1; i < locationarray.Length; i++)
             {
                 filearray = locationarray[i].Split(file_seperater, StringSplitOptions.None);
-                if(filearray.Length == 1)
-                    callstacklist.Add(new SMECallStack(filearray[0],"",0));
-                else if(filearray.Length == 2)
+                //if(filearray.Length == 3)
+                //    callstacklist.Add(new SMECallStack(filearray[0],
+                //                                   filearray[1],
+                //                                   int.Parse(filearray[2])));
+                if (filearray.Length == 1)
+                    callstacklist.Add(new SMECallStack(filearray[0], "library method", 0));
+                else if (filearray.Length == 2)
                     callstacklist.Add(new SMECallStack(filearray[0],
                                                        filearray[1],
                                                        0));
-                else if(filearray.Length == 3)
+                else if (filearray.Length == 3)
                     callstacklist.Add(new SMECallStack(filearray[0],
                                                        filearray[1],
                                                        int.Parse(filearray[2])));
