@@ -26,6 +26,7 @@ namespace testConsole
             //exception throw
             //testclass.NullReferenceExceptionThrow();
             //testclass.UnhandleExceptionthrow();
+            testclass.CppErrorThorw();
             
             //testclass.stacktracetest();
             //testclass.msdnenvtestcode();
@@ -33,13 +34,13 @@ namespace testConsole
             //testclass.exceptioninfotest(new NullReferenceException());
             
             //testclass.xmlwritertest();
-            testclass.xmlwriterloadtest();
+            //testclass.xmlwriterloadtest();
             //testclass.XMLtest();
-            Console.WriteLine();
         }
     }
     class testclass
     {
+        // Error occur
         public static void NullReferenceExceptionThrow()
         {
             throw new NullReferenceException();
@@ -49,6 +50,19 @@ namespace testConsole
             string str = "100";
             str.PadLeft(1000,'1');
         }
+        public static void CppErrorThorw()
+        {
+            managedCal.AddCalWrap errorclass = new managedCal.AddCalWrap();
+            try
+            {
+                errorclass.Add(1, 2);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        
         public static void stacktracetest()
         {
             
@@ -229,7 +243,7 @@ namespace testConsole
             SMEXMLWriter xml = new SMEXMLWriter(new SMEProjectInformation("", null),
                 new SMESystemInformation(),
                 new SMEExceptionInformation(new NullReferenceException()),
-                new SMECallstackInformation(new NullReferenceException()));
+                new SMECallstackInformation(new NullReferenceException(), null));
             xml.SaveToXML("C:\\Dumps\\CS.xml");
         }
         public static void xmlwriterloadtest()
@@ -237,5 +251,6 @@ namespace testConsole
             SMEXMLWriter xml = new SMEXMLWriter();
             xml.LoadFromXML("C:\\Dumps\\CS1.xml");
         }
+        
     }
 }

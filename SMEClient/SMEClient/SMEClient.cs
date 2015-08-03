@@ -40,7 +40,8 @@ namespace SME
             Exception exception = (Exception)args.ExceptionObject;
             
             //예외처리 조합 SMECollector
-            m_SMECollector = new SMECollector(exception);
+            StackTrace stacktrace = new StackTrace(true);
+            m_SMECollector = new SMECollector(exception, stacktrace);
             
             //전송 Sender
             #region SendRegion

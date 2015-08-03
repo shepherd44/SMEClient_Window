@@ -63,14 +63,19 @@ namespace SME
             CollectCallStack(exception);
             // test Console
             Thread th = new Thread(new ThreadStart(ConsoleTest));
+            th.Name = "Print";
             th.Start();
 
             // 작업 끝
             m_CollectSemaphore.Release(1);
         }
+        // Thread를 사용할 경우
+        // m_ErrorCallStack = 에러가 발생한 thread의 StackTrace
+        // Thread를 사용하지 않을 경우
+        // m_ErrorCalStack = null;
         private void CollectCallStack(Exception exception)
         {
-            m_callstackinfo = new SMECallstackInformation(exception);
+            m_callstackinfo = new SMECallstackInformation(exception, m_ErrorCallStack);
         }
         private void CollectProjectInfo()
         {
@@ -105,10 +110,18 @@ namespace SME
             m_CollectSemaphore.Release(1);
         }
 
-        //생성자
+        // 생성자
         public SMECollector() { }
+        // Thread를 사용 안할 경우
         public SMECollector(Exception exception)
         {
+            CollectErrorInformation(exception);
+            SaveToXML();
+        }
+        // Thread를 사용 할 경우
+        public SMECollector(Exception exception, StackTrace stack)
+        {
+            m_ErrorCallStack = stack;
             m_CollectThread = new Thread(new ParameterizedThreadStart(CollectErrorInformation));
             m_CollectThread.Name = "CollectThread";
             m_SaveXMLThread = new Thread(new ThreadStart(SaveToXML));
@@ -131,6 +144,8 @@ namespace SME
         private SMEProjectInformation m_projectinfo = null;
         private SMEExceptionInformation m_exceptioninfo = null;
         private SMECallstackInformation m_callstackinfo = null;
+        // error
+        StackTrace m_ErrorCallStack = null;
         // 정보를 모아줄 쓰레드
         private Thread m_CollectThread = null;
         // 정보를 모으는 중 xml파일로 저장하는걸 방지하기 위해 semaphore 생성
@@ -146,6 +161,7 @@ namespace SME
         public void ConsoleTest()
         {
             Console.WriteLine("start-------------------------------------------------------");
+            Console.WriteLine("Current stack trace");
             Console.WriteLine(m_sysInfo.ToString());
             Console.WriteLine(m_projectinfo.ToString());
             Console.WriteLine(m_exceptioninfo.ToString());

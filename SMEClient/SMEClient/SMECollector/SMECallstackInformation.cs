@@ -17,21 +17,40 @@ namespace SME
 
         private void AddCallStack(SMECallStack smecallstack) { m_listCallstack.Add(smecallstack); }
         
+        //public SMECallstackInformation(Exception exception)
+        //{
+        //    StackTrace stacktrace = new StackTrace(true);
+        //    StackFrame[] stackframes = stacktrace.GetFrames();
+        //    foreach (StackFrame item in stackframes)
+        //    {
+        //        SMECallStack smecallstack = new SMECallStack(item);
+        //        AddCallStack(smecallstack);
+        //    }
+        //    List<SMECallStack> listtemp = SMECallStack.ParseFromException(exception);
+        //    if(listtemp != null)
+        //        m_listCallstack.AddRange(listtemp);
+        //}
+
         // 생성자
-        public SMECallstackInformation(Exception exception)
+        // @stacktrace: null일 경우 thread 사용 안하는 경우로, 현재 Threa에서 Stacktrace 변수를 생성
+        public SMECallstackInformation(Exception exception, StackTrace stacktrace)
         {
-            StackTrace stacktrace = new StackTrace(true);
-            StackFrame[] stackframes = stacktrace.GetFrames();
+            StackFrame[] stackframes;
+            if (stacktrace == null)
+                stackframes = new StackTrace(true).GetFrames();
+            else
+                stackframes = stacktrace.GetFrames();
+            
             foreach (StackFrame item in stackframes)
             {
                 SMECallStack smecallstack = new SMECallStack(item);
                 AddCallStack(smecallstack);
             }
             List<SMECallStack> listtemp = SMECallStack.ParseFromException(exception);
-            if(listtemp != null)
+            if (listtemp != null)
                 m_listCallstack.AddRange(listtemp);
         }
-        
+
         public XElement ToXElement()
         {
             XElement xmldoc = new XElement("CallStackInformation");
