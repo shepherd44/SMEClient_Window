@@ -9,20 +9,23 @@ namespace SME
 {
     public class SMEXMLWriter
     {
-        XDocument m_xmldocument = null;
-        XElement m_rootElement = null;
+        #region Members
+        private XDocument m_xmldocument = null;
+        private XElement m_rootElement = null;
+        #endregion
         
         public void SaveToXML(string path)
         {
-            DateTime currTime = DateTime.Now;
             m_xmldocument.Save(path);
         }
+
         public void LoadFromXML(string path)
         {
             m_xmldocument = XDocument.Load(path);
             m_rootElement = (XElement)m_xmldocument.FirstNode;
         }
 
+        #region Constructor
         // 생성자
         public SMEXMLWriter() { }
         public SMEXMLWriter(string loadpath)
@@ -43,7 +46,10 @@ namespace SME
             m_rootElement.Add(exinfo.ToXElement());
             m_rootElement.Add(callstackinfo.ToXElement());
         }
+        #endregion
     }
+
+
     public class XMLHelper
     {
         public static XElement FindElement(XElement parent, string child)

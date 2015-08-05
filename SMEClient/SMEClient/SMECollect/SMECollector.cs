@@ -63,6 +63,7 @@ namespace SME.SMECollect
 {
     public class SMECollector
     {
+        #region Functions
         // Collect Error Information
         // 는 class 생성과 동시에 만듬.
         // Exception information, CallStack Information은 예외 발생시 생성
@@ -71,7 +72,7 @@ namespace SME.SMECollect
         {
             // Collect 작업 시작
             Exception exception = (Exception)e;
-            CollectProjectInfo();
+            //CollectProjectInfo();
             CollectExceptionInfo(exception);
             CollectCallStack(exception);
             // test Console
@@ -117,24 +118,59 @@ namespace SME.SMECollect
         {
             m_CollectSemaphore.WaitOne();
             m_smexmlwriter = new SMEXMLWriter(m_projectinfo,
-                                                m_sysInfo,
-                                                m_exceptioninfo,
-                                                m_callstackinfo);
-            m_smexmlwriter.SaveToXML(k_XMLfilepath);
+                                              m_sysInfo,
+                                              m_exceptioninfo,
+                                              m_callstackinfo);
+            m_XMLFilePath = m_XMLFolderPath;
+            m_XMLFilePath += m_projectinfo.Name.Trim() + "-";
+            m_XMLFilePath += m_currentTime.ToShortDateString() + "-";
+            if (m_currentTime.Hour < 10)
+                m_XMLFilePath += "0" + m_currentTime.Hour.ToString() + "-";
+            else
+                m_XMLFilePath += m_currentTime.Hour.ToString() + "-";
+            if (m_currentTime.Minute < 10)
+                m_XMLFilePath += "0" + m_currentTime.Minute.ToString() + "-";
+            else
+                m_XMLFilePath += m_currentTime.Minute.ToString() + "-";
+            if (m_currentTime.Second < 10)
+                m_XMLFilePath += "0" + m_currentTime.Second.ToString();
+            else
+                m_XMLFilePath += m_currentTime.Second.ToString();
+            m_XMLFilePath += ".xml";
+            m_smexmlwriter.SaveToXML(m_XMLFilePath);
             m_CollectSemaphore.Release(1);
         }
 
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        public void ConsoleTest()
+        {
+            Console.WriteLine("start-------------------------------------------------------");
+            Console.WriteLine("Current stack trace");
+            Console.WriteLine(m_sysInfo.ToString());
+            Console.WriteLine(m_projectinfo.ToString());
+            Console.WriteLine(m_exceptioninfo.ToString());
+            Console.WriteLine(m_callstackinfo.ToString());
+            Console.WriteLine("end--------------------------------------------------------");
+        }
+        #endregion
+
+        #region Constructor
         // 생성자
         public SMECollector() { }
         // Thread를 사용 안할 경우
-        public SMECollector(Exception exception)
-        {
-            CollectErrorInformation(exception);
-            SaveToXML();
-        }
+        //public SMECollector(Exception exception)
+        //{
+        //    CollectErrorInformation(exception);
+        //    SaveToXML();
+        //}
         // Thread를 사용 할 경우
-        public SMECollector(Exception exception, StackTrace stack)
+        public SMECollector(Exception exception, StackTrace stack, SMEProjectInformation smeproinfo)
         {
+            m_projectinfo = smeproinfo;
             m_ErrorCallStack = stack;
             m_CollectThread = new Thread(new ParameterizedThreadStart(CollectErrorInformation));
             m_CollectThread.Name = "CollectThread";
@@ -147,12 +183,9 @@ namespace SME.SMECollect
             m_CollectThread.Start(exception);
             m_SaveXMLThread.Start();
         }
+        #endregion
 
-        public override string ToString()
-        {
-            return base.ToString();
-        }
-        
+        #region Members
         // 정보 저장용 class들
         // SMESytemInformation : 플랫폼, os, clr 정보 등을 가지고 있음, 시작과 동시에 생성
         // SMEProjectInformation : 프로젝트의 버전 및 이름을 저장
@@ -174,19 +207,10 @@ namespace SME.SMECollect
         
         // 덤프xml파일 저장 위치
         // 파일명 날짜로 변경 필요
-        const string k_XMLfilepath = "C:\\Dumps\\CS.xml";
-
-        public void ConsoleTest()
-        {
-
-            Console.WriteLine("start-------------------------------------------------------");
-            Console.WriteLine("Current stack trace");
-            Console.WriteLine(m_sysInfo.ToString());
-            Console.WriteLine(m_projectinfo.ToString());
-            Console.WriteLine(m_exceptioninfo.ToString());
-            Console.WriteLine(m_callstackinfo.ToString());
-            Console.WriteLine("end--------------------------------------------------------");
-        }
+        const string m_XMLFolderPath = "C:\\Dumps\\CS\\";
+        DateTime m_currentTime = DateTime.Now;
+        string m_XMLFilePath = null;
+        #endregion
     }
     
 }

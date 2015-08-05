@@ -27,13 +27,17 @@ namespace testConsole
             Console.WriteLine("-------------------------------------------");
             Console.WriteLine("test Console");
             Console.WriteLine("-------------------------------------------");
-            SME.SMEClient smeclient = new SMEClient(false, "test key");
+            SME.SMEClient smeclient = new SMEClient("TestProject", null, true, "test key");
 
+            DateTime currentTime = DateTime.Now;
+            TimeSpan time = currentTime.TimeOfDay;
+            Console.WriteLine(currentTime.ToShortDateString()+":"+time.Hours.ToString());
+            Console.WriteLine(currentTime.Year.ToString()+currentTime.Month.ToString() + currentTime.Day.ToString() + currentTime.Hour.ToString());
             //exception throw
             //testclass.NullReferenceExceptionThrow();
-            testclass.CppErrorThorw();
+            //testclass.CppErrorThorw();
             //testclass.ThreadErrorThrow();
-            //testclass.LoadFailErrorThrow();
+            testclass.LoadFailErrorThrow();
 
             //testclass.stacktracetest();
             //testclass.msdnenvtestcode();
@@ -62,6 +66,10 @@ namespace testConsole
             catch(Exception e)
             {
                 Console.WriteLine(e.Message);
+            }
+            catch
+            {
+                Console.WriteLine("non-cls");
             }
             
         }

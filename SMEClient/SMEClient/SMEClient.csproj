@@ -49,7 +49,7 @@
     <Compile Include="SMECollect\SMEExceptionInformation.cs" />
     <Compile Include="SMECollect\SMEProjectInformation.cs" />
     <Compile Include="SMECollect\SMESystemInformation.cs" />
-    <Compile Include="SMESender\SMESender.cs" />
+    <Compile Include="SMESend\SMESender.cs" />
     <Compile Include="XMLHelper.cs" />
   </ItemGroup>
   <ItemGroup>

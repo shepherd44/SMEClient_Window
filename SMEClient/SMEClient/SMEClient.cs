@@ -20,8 +20,9 @@ namespace SME
     public class SMEClient
     {
     #region members
+        public static SMEProjectInformation ProjectInfo { get; set; }
         // 객체를 생성해준 앱도메인
-        private AppDomain m_currentDomain;
+        public static AppDomain CurrentDomain { get; protected internal set;}
         // cpp 감시를 시작할 지 결정
         // 감시를 시작할 경우 true 설정
         public bool UseCPP { get; set; }
@@ -37,7 +38,7 @@ namespace SME
         // SMEClient 생성자
         // @currentapplication: Form을 사용할 경우 대입 아닐 경우 null
         // @currentDomain: 호출해 준 프로세스의 기본 앱도메인
-        public SMEClient(bool usecpp, String APIKey)
+        public SMEClient(string proname, Version proversion, bool usecpp, String APIKey)
         {
             
             // 우선 순위 조정, 최고 우선순위로
@@ -50,17 +51,18 @@ namespace SME
             Application.ThreadException += new ThreadExceptionEventHandler(SMEThreaqdExceptionHandler);
 
             // AppDomain 영역 핸들러 설정
-            m_currentDomain = AppDomain.CurrentDomain;
+            CurrentDomain = AppDomain.CurrentDomain;
             // First Chance Exception Handler 설정
-            m_currentDomain.FirstChanceException += SMEFirstChanceExceptionHandler;
+            CurrentDomain.FirstChanceException += SMEFirstChanceExceptionHandler;
             // Non-UI Thread Unhandled Exception Handler 설정
-            m_currentDomain.UnhandledException += new UnhandledExceptionEventHandler(SMEUnHandledExceptionHandler);
+            CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(SMEUnHandledExceptionHandler);
             
             // google_breakpad 설정
             UseCPP = usecpp;
             if (UseCPP)
                 m_Wrapper = new breakpadWrapper();
-            
+
+            ProjectInfo = new SMEProjectInformation(proname, proversion);
             // Server에 전송할 APIKey
             APIKEY = APIKey;
         }		 
@@ -73,9 +75,9 @@ namespace SME
             Exception exception = (Exception)e.ExceptionObject;
             //예외처리 조합 SMECollector
             StackTrace stacktrace = new StackTrace(true);
-            m_SMECollector = new SMECollector(exception, stacktrace);
+            m_SMECollector = new SMECollector(exception, stacktrace, ProjectInfo);
             
-            //전송 Sender
+            //파일 전송
         }
 
         // Unhandled, Handled 두 경우 모두 반응하게 된다. 
@@ -92,6 +94,5 @@ namespace SME
             Console.WriteLine("ThreadException");
         }
     #endregion
-
     }
 }
