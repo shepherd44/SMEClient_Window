@@ -16,8 +16,8 @@ namespace SME.SMECollect
         string m_exHelpLink = null;
         int m_exHResult = 0;
         string m_exMessage = null;
-        List<SMECallStack> m_listCallstack = new List<SMECallStack>();
-        Exception m_innerException = null;
+        List<SMECallStack> m_listCallstack = null;
+        SMEExceptionInformation m_innerException = null;
 
         public SMEExceptionInformation(Exception exception)
         {
@@ -27,7 +27,8 @@ namespace SME.SMECollect
             m_exHResult = exception.HResult;
             m_exMessage = exception.Message != null ? exception.Message : "";
             m_listCallstack = SMECallStack.ParseFromException(exception);
-            m_innerException = exception.InnerException != null ? exception.InnerException : null;
+            m_innerException = exception.InnerException != 
+                null ? new SMEExceptionInformation(exception) : null;
         }
 
         public XElement ToXElement()
@@ -39,17 +40,25 @@ namespace SME.SMECollect
                                 new XElement("HelpLink", m_exHelpLink),
                                 new XElement("Message", m_exMessage)
                                 );
-            XElement exceptionstack = new XElement("ExceptionStack");
-            xmldoc.Add(exceptionstack);
-            for (int i = 0; i < m_listCallstack.Count; i++)
-                exceptionstack.Add(m_listCallstack[i].ToXElement());
 
+            // Exception stacktrace 처리
+            XElement exceptionstack = new XElement("ExceptionStack");
+            if(m_listCallstack != null)
+                for (int i = 0; i < m_listCallstack.Count; i++)
+                    exceptionstack.Add(m_listCallstack[i].ToXElement());
+            xmldoc.Add(exceptionstack);
+            
+            // innerexception 처리
+            XElement innerexception = new XElement("InnerException");
+            if(m_innerException != null)
+                innerexception.Add(m_innerException.ToXElement());
+            xmldoc.Add(innerexception);
+            
             return xmldoc;
         }
 
         override public string ToString()
         {
-
             string temp = "Exception Information\n";
             temp += ":Name:"+m_exName;
             temp += ":Data:";
@@ -72,11 +81,9 @@ namespace SME.SMECollect
             if (m_exData == null)
                 return xmldoc;
             foreach (DictionaryEntry item in m_exData)
-            {
                 xmldoc.Add(item.Key.ToString(), item.Value.ToString());
-            }
+
             return xmldoc;
         }
-        
     }
 }

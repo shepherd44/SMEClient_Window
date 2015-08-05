@@ -18,20 +18,34 @@
  *     <TickCount></TickCount>
  *   </SystemInformation>
  *   <ExceptionInformation>
- *     <Name></Name>
- *     <Data>
- *       <Key>Value</Key>
- *     </Data>
- *     <Hresult></Hresult>
- *     <HelpLink></HelpLink>
- *     <Message></Message>
+ *      <Name></Name>
+ *      <Data>
+ *          <Key>Value</Key>
+ *      </Data>
+ *      <Hresult></Hresult>
+ *      <HelpLink></HelpLink>
+ *      <Message></Message>
+ *      <ExceptionStack>
+ *          <Stack>
+ *              <Method></Method>
+ *              <FileName></FileName>
+ *              <Line></Line>
+ *          </Stack>
+ *      </ExceptionStack>
+ *      <InnerException>
+ *          <ExceptionInformation>
+ *          ...
+ *          </ExceptionInformation>
+ *      </InnerException>
  *   </ExceptionInformation>
  *   <CallStackInformation>
- *     <Stack>
- *       <Method></Method>
- *       <FileName></FileName>
- *       <Line></Line>
- *     </Stack>
+ *      <DomainStack>
+ *          <Stack>
+ *              <Method></Method>
+ *              <FileName></FileName>
+ *              <Line></Line>
+ *          </Stack>
+ *      </DomainStack>
  *   </CallStackInformation>
  * </SME>
  ***************************************************************/

@@ -16,8 +16,6 @@ namespace SME.SMECollect
         Version m_CLRVersion;
         bool m_Is64bitOS;
         bool m_Is64bitProcess;
-        int m_SystemPageSize;
-        int m_TickCount;
 
         public SMESystemInformation()
         {
@@ -29,8 +27,6 @@ namespace SME.SMECollect
             m_servicePack = os.ServicePack;
             m_Is64bitOS = Environment.Is64BitOperatingSystem;
             m_Is64bitProcess = Environment.Is64BitProcess;
-            m_SystemPageSize = Environment.SystemPageSize;
-            m_TickCount = Environment.TickCount;
         }
 
         public XElement ToXElement() 
@@ -41,9 +37,7 @@ namespace SME.SMECollect
                                 new XElement("OSVersion", m_OSVersion.ToString()),
                                 new XElement("CLRVersion", m_CLRVersion.ToString()),
                                 new XElement("Is64BitOS", m_Is64bitOS.ToString()),
-                                new XElement("Is64BitProcess", m_Is64bitProcess.ToString()),
-                                new XElement("PageSize", m_SystemPageSize.ToString()),
-                                new XElement("TickCount", m_TickCount.ToString()));
+                                new XElement("Is64BitProcess", m_Is64bitProcess.ToString()));
             return xmldoc;
         }
 
@@ -56,8 +50,6 @@ namespace SME.SMECollect
             temp += ":CLRVersion:" + m_CLRVersion.ToString();
             temp += ":Is64bitOS:" + m_Is64bitOS.ToString();
             temp += ":Is64bitProcess:" + m_Is64bitProcess.ToString();
-            temp += ":PageSize:" + m_SystemPageSize.ToString();
-            temp += ":TickCount:" + m_TickCount.ToString();
             return temp; 
         }
     }
