@@ -3,6 +3,8 @@ using System.Collections;
 using System.IO;
 using System.Xml.Linq;
 
+using SME.SMECollect;
+
 namespace SME
 {
     public class SMEXMLWriter
@@ -12,6 +14,7 @@ namespace SME
         
         public void SaveToXML(string path)
         {
+            DateTime currTime = DateTime.Now;
             m_xmldocument.Save(path);
         }
         public void LoadFromXML(string path)

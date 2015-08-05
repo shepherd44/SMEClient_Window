@@ -9,8 +9,10 @@ using System.Xml;
 using System.Xml.Linq;
 
 using SME;
+using SME.SMECollect;
 using google_breakpad;
 using managedCal;
+using System.Threading;
 
 namespace testConsole
 {
@@ -21,13 +23,14 @@ namespace testConsole
             Console.WriteLine("-------------------------------------------");
             Console.WriteLine("test Console");
             Console.WriteLine("-------------------------------------------");
-            SME.SMEClient smeclient = new SMEClient(AppDomain.CurrentDomain, false, "test key");
+            SME.SMEClient smeclient = new SMEClient(true, "test key");
 
             //exception throw
             //testclass.NullReferenceExceptionThrow();
-            //testclass.UnhandleExceptionthrow();
-            testclass.CppErrorThorw();
-            
+            //testclass.CppErrorThorw();
+            //testclass.ThreadErrorThrow();
+            testclass.LoadFailErrorThrow();
+
             //testclass.stacktracetest();
             //testclass.msdnenvtestcode();
             //testclass.systeminfotest();
@@ -45,24 +48,23 @@ namespace testConsole
         {
             throw new NullReferenceException();
         }
-        public static void UnhandleExceptionthrow()
-        {
-            string str = "100";
-            str.PadLeft(1000,'1');
-        }
         public static void CppErrorThorw()
         {
             managedCal.AddCalWrap errorclass = new managedCal.AddCalWrap();
-            try
-            {
-                errorclass.Add(1, 2);
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            errorclass.Add(1, 2);
         }
-        
+        public static void ThreadErrorThrow()
+        {
+            Thread th = new Thread(new ThreadStart(NullReferenceExceptionThrow));
+            th.Start();
+
+        }
+        public static void LoadFailErrorThrow()
+        {
+            SMEXMLWriter xml = new SMEXMLWriter();
+            xml.LoadFromXML("C:\\Dumps\\CS1.xml");
+        }
+
         public static void stacktracetest()
         {
             
@@ -243,13 +245,13 @@ namespace testConsole
             SMEXMLWriter xml = new SMEXMLWriter(new SMEProjectInformation("", null),
                 new SMESystemInformation(),
                 new SMEExceptionInformation(new NullReferenceException()),
-                new SMECallstackInformation(new NullReferenceException(), null));
+                new SMECallstackInformation(null));
             xml.SaveToXML("C:\\Dumps\\CS.xml");
         }
         public static void xmlwriterloadtest()
         {
             SMEXMLWriter xml = new SMEXMLWriter();
-            xml.LoadFromXML("C:\\Dumps\\CS1.xml");
+            xml.LoadFromXML("C:\\Dumps\\CS.xml");
         }
         
     }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace SME
+namespace SME.SMECollect
 {
     // 현재 프로그램의 정보 수집
     public class SMEProjectInformation

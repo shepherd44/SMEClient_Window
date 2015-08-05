@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,15 +49,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\breakpadWrapper\breakpadWrapper.vcxproj">
+    <ProjectReference Include="..\..\breakpadWrapper\breakpadWrapper.vcxproj">
       <Project>{f3fc2a53-6bf6-4aaa-8f9f-8a585bd36fde}</Project>
       <Name>breakpadWrapper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\error_gen\managedCal\managedCal.vcxproj">
+    <ProjectReference Include="..\..\error_gen\managedCal\managedCal.vcxproj">
       <Project>{1fd816e4-78b0-4f14-8b44-cc19b288da13}</Project>
       <Name>managedCal</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SMEClient\SMEClient.csproj">
+    <ProjectReference Include="..\..\SMEClient\SMEClient.csproj">
       <Project>{974b5c4f-e77e-4fa1-ab6c-a5b9b857fea6}</Project>
       <Name>SMEClient</Name>
     </ProjectReference>

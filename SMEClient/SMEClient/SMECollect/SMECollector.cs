@@ -45,7 +45,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Collections;
 
-namespace SME
+namespace SME.SMECollect
 {
     public class SMECollector
     {
@@ -55,8 +55,7 @@ namespace SME
         // xml 파일 쓰기 전 세마포어로 락을 걸어 정보를 모을때까지 기다림
         public void CollectErrorInformation(object e)
         {
-            m_CollectSemaphore = new Semaphore(0, 1);
-            // 작업 시작
+            // Collect 작업 시작
             Exception exception = (Exception)e;
             CollectProjectInfo();
             CollectExceptionInfo(exception);
@@ -66,7 +65,8 @@ namespace SME
             th.Name = "Print";
             th.Start();
 
-            // 작업 끝
+            // Collect 작업 끝
+            // Semaphore lock 해제 -> Save 작업 시작
             m_CollectSemaphore.Release(1);
         }
         // Thread를 사용할 경우
@@ -75,7 +75,7 @@ namespace SME
         // m_ErrorCalStack = null;
         private void CollectCallStack(Exception exception)
         {
-            m_callstackinfo = new SMECallstackInformation(exception, m_ErrorCallStack);
+            m_callstackinfo = new SMECallstackInformation(m_ErrorCallStack);
         }
         private void CollectProjectInfo()
         {
@@ -126,6 +126,10 @@ namespace SME
             m_CollectThread.Name = "CollectThread";
             m_SaveXMLThread = new Thread(new ThreadStart(SaveToXML));
             m_SaveXMLThread.Name = "SaveThread";
+
+            // collect Thread 안에서 semaphore를 초기화 할 경우 세마포어가 초기화 되기 전
+            // Save Thread 안에서 초기화 되지 않은 세마포어를 가지고 wait를 진행하는 경우가 발생.
+            m_CollectSemaphore = new Semaphore(0, 1);
             m_CollectThread.Start(exception);
             m_SaveXMLThread.Start();
         }
@@ -160,6 +164,7 @@ namespace SME
 
         public void ConsoleTest()
         {
+
             Console.WriteLine("start-------------------------------------------------------");
             Console.WriteLine("Current stack trace");
             Console.WriteLine(m_sysInfo.ToString());

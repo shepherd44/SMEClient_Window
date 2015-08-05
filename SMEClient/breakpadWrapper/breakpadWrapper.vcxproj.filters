@@ -27,6 +27,9 @@
     <ClInclude Include="..\windows\handler\exception_handler.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="SMEException.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="breakpadWrapper.cpp">
@@ -36,6 +39,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Stdafx.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SMEException.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
