@@ -14,7 +14,7 @@ namespace SME.SMECollect
         //projectName
         public string Name { get; set; }
         //projectVersion
-        Version m_Version = null;
+        public Version m_Version { get; set; }
         #endregion
 
         #region Constructor

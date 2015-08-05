@@ -75,9 +75,10 @@ namespace SME
             Exception exception = (Exception)e.ExceptionObject;
             //예외처리 조합 SMECollector
             StackTrace stacktrace = new StackTrace(true);
-            m_SMECollector = new SMECollector(exception, stacktrace, ProjectInfo);
+            SMECollector smecollector = new SMECollector(exception, stacktrace, ProjectInfo);
             
             //파일 전송
+
         }
 
         // Unhandled, Handled 두 경우 모두 반응하게 된다. 

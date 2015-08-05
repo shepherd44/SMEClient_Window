@@ -121,22 +121,7 @@ namespace SME.SMECollect
                                               m_sysInfo,
                                               m_exceptioninfo,
                                               m_callstackinfo);
-            m_XMLFilePath = m_XMLFolderPath;
-            m_XMLFilePath += m_projectinfo.Name.Trim() + "-";
-            m_XMLFilePath += m_currentTime.ToShortDateString() + "-";
-            if (m_currentTime.Hour < 10)
-                m_XMLFilePath += "0" + m_currentTime.Hour.ToString() + "-";
-            else
-                m_XMLFilePath += m_currentTime.Hour.ToString() + "-";
-            if (m_currentTime.Minute < 10)
-                m_XMLFilePath += "0" + m_currentTime.Minute.ToString() + "-";
-            else
-                m_XMLFilePath += m_currentTime.Minute.ToString() + "-";
-            if (m_currentTime.Second < 10)
-                m_XMLFilePath += "0" + m_currentTime.Second.ToString();
-            else
-                m_XMLFilePath += m_currentTime.Second.ToString();
-            m_XMLFilePath += ".xml";
+            DateToFilePath();
             m_smexmlwriter.SaveToXML(m_XMLFilePath);
             m_CollectSemaphore.Release(1);
         }
@@ -155,6 +140,27 @@ namespace SME.SMECollect
             Console.WriteLine(m_exceptioninfo.ToString());
             Console.WriteLine(m_callstackinfo.ToString());
             Console.WriteLine("end--------------------------------------------------------");
+        }
+
+        private void DateToFilePath()
+        {
+            m_XMLFilePath = m_XMLFolderPath;
+            m_XMLFilePath += m_projectinfo.Name.Trim() + "-";
+            m_XMLFilePath += m_projectinfo.m_Version.ToString() + "-";
+            m_XMLFilePath += m_currentTime.ToShortDateString() + "-";
+            if (m_currentTime.Hour < 10)
+                m_XMLFilePath += "0" + m_currentTime.Hour.ToString() + "-";
+            else
+                m_XMLFilePath += m_currentTime.Hour.ToString() + "-";
+            if (m_currentTime.Minute < 10)
+                m_XMLFilePath += "0" + m_currentTime.Minute.ToString() + "-";
+            else
+                m_XMLFilePath += m_currentTime.Minute.ToString() + "-";
+            if (m_currentTime.Second < 10)
+                m_XMLFilePath += "0" + m_currentTime.Second.ToString();
+            else
+                m_XMLFilePath += m_currentTime.Second.ToString();
+            m_XMLFilePath += ".xml";
         }
         #endregion
 
