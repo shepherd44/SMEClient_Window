@@ -14,6 +14,10 @@ using google_breakpad;
 using managedCal;
 using System.Threading;
 
+
+using System.Runtime.CompilerServices;
+[assembly: RuntimeCompatibility(WrapNonExceptionThrows = true)]
+
 namespace testConsole
 {
     class Program
@@ -23,13 +27,13 @@ namespace testConsole
             Console.WriteLine("-------------------------------------------");
             Console.WriteLine("test Console");
             Console.WriteLine("-------------------------------------------");
-            SME.SMEClient smeclient = new SMEClient(true, "test key");
+            SME.SMEClient smeclient = new SMEClient(false, "test key");
 
             //exception throw
             //testclass.NullReferenceExceptionThrow();
-            //testclass.CppErrorThorw();
+            testclass.CppErrorThorw();
             //testclass.ThreadErrorThrow();
-            testclass.LoadFailErrorThrow();
+            //testclass.LoadFailErrorThrow();
 
             //testclass.stacktracetest();
             //testclass.msdnenvtestcode();
@@ -50,8 +54,16 @@ namespace testConsole
         }
         public static void CppErrorThorw()
         {
-            managedCal.AddCalWrap errorclass = new managedCal.AddCalWrap();
-            errorclass.Add(1, 2);
+            try
+            {
+                managedCal.AddCalWrap errorclass = new managedCal.AddCalWrap();
+                errorclass.Add(1, 2);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
         }
         public static void ThreadErrorThrow()
         {

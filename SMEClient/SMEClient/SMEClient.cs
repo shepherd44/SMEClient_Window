@@ -11,6 +11,9 @@ using System.Windows.Forms;
 using google_breakpad;
 using SME.SMECollect;
 using System.Runtime.ExceptionServices;
+using System.Runtime.CompilerServices;
+
+[assembly: RuntimeCompatibility(WrapNonExceptionThrows = true)]
 
 namespace SME
 {
@@ -36,6 +39,7 @@ namespace SME
         // @currentDomain: 호출해 준 프로세스의 기본 앱도메인
         public SMEClient(bool usecpp, String APIKey)
         {
+            
             // 우선 순위 조정, 최고 우선순위로
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
             
@@ -47,7 +51,7 @@ namespace SME
 
             // AppDomain 영역 핸들러 설정
             m_currentDomain = AppDomain.CurrentDomain;
-            // First Chance Handled Exception Handler 설정
+            // First Chance Exception Handler 설정
             m_currentDomain.FirstChanceException += SMEFirstChanceExceptionHandler;
             // Non-UI Thread Unhandled Exception Handler 설정
             m_currentDomain.UnhandledException += new UnhandledExceptionEventHandler(SMEUnHandledExceptionHandler);
