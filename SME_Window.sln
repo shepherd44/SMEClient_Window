@@ -31,7 +31,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "crash_gen_testclient", "goo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "crash_gen_testserver", "google-breakpad\test\crash_gen_testserver\crash_gen_testserver.vcxproj", "{D3976B05-5C04-4EF6-BA73-0BDF29AC5BCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMEClient", "SMEClient\SMEClient\SMEClient.csproj", "{974B5C4F-E77E-4FA1-AB6C-A5B9B857FEA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SME", "SMEClient\SMEClient\SME.csproj", "{974B5C4F-E77E-4FA1-AB6C-A5B9B857FEA6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "breakpadWrapper", "SMEClient\breakpadWrapper\breakpadWrapper.vcxproj", "{F3FC2A53-6BF6-4AAA-8F9F-8A585BD36FDE}"
 EndProject

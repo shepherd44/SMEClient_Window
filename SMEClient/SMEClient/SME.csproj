@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HttpHelper.cs" />
     <Compile Include="SMEClient.cs" />
     <Compile Include="SMECollect\SMECallStack.cs" />
     <Compile Include="SMECollect\SMECallstackInformation.cs" />
@@ -50,7 +49,8 @@
     <Compile Include="SMECollect\SMEProjectInformation.cs" />
     <Compile Include="SMECollect\SMESystemInformation.cs" />
     <Compile Include="SMESend\SMESender.cs" />
-    <Compile Include="XMLHelper.cs" />
+    <Compile Include="SMEXML\SMEXMLWriter.cs" />
+    <Compile Include="SMEXML\XMLHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\breakpadWrapper\breakpadWrapper.vcxproj">
@@ -58,9 +58,7 @@
       <Name>breakpadWrapper</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SMEXML\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

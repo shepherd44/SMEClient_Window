@@ -10,13 +10,13 @@ using System.Xml.Linq;
 
 using SME;
 using SME.SMECollect;
+using SME.SMEXML;
 using google_breakpad;
 using managedCal;
 using System.Threading;
 
 
 using System.Runtime.CompilerServices;
-[assembly: RuntimeCompatibility(WrapNonExceptionThrows = true)]
 
 namespace testConsole
 {

@@ -57,9 +57,9 @@
       <Project>{1fd816e4-78b0-4f14-8b44-cc19b288da13}</Project>
       <Name>managedCal</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SMEClient\SMEClient.csproj">
+    <ProjectReference Include="..\..\SMEClient\SME.csproj">
       <Project>{974b5c4f-e77e-4fa1-ab6c-a5b9b857fea6}</Project>
-      <Name>SMEClient</Name>
+      <Name>SME</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

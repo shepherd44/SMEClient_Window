@@ -58,6 +58,7 @@ using System.Threading;
 
 using System.Diagnostics;
 using System.Collections;
+using SME.SMEXML;
 
 namespace SME.SMECollect
 {

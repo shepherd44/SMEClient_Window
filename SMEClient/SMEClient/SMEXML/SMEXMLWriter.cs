@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Collections;
-using System.IO;
-using System.Xml.Linq;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
+using System.Xml.Linq;
 using SME.SMECollect;
 
-namespace SME
+namespace SME.SMEXML
 {
     public class SMEXMLWriter
     {
@@ -13,7 +15,7 @@ namespace SME
         private XDocument m_xmldocument = null;
         private XElement m_rootElement = null;
         #endregion
-        
+
         public void SaveToXML(string path)
         {
             m_xmldocument.Save(path);
@@ -48,30 +50,4 @@ namespace SME
         }
         #endregion
     }
-
-
-    public class XMLHelper
-    {
-        public static XElement FindElement(XElement parent, string child)
-        {
-            IEnumerable childnodes = parent.Nodes();
-            foreach (XElement item in childnodes)
-            {
-                if (item.Name.ToString().Equals(child))
-                    break;
-            }
-            return null;
-        }
-        public static void PrintChildElement(XElement parent)
-        {
-            foreach (XElement item in parent.Nodes())
-            {
-                Console.WriteLine(item.Name);
-            }
-        }
-        public static void PrintAllElement(XElement root)
-        {
-        }
-    }
-    
 }
