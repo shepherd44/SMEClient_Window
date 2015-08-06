@@ -57,7 +57,7 @@
       <Project>{1fd816e4-78b0-4f14-8b44-cc19b288da13}</Project>
       <Name>managedCal</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SMEClient\SME.csproj">
+    <ProjectReference Include="..\..\SMEWindow\SMEWindow.csproj">
       <Project>{974b5c4f-e77e-4fa1-ab6c-a5b9b857fea6}</Project>
       <Name>SME</Name>
     </ProjectReference>
