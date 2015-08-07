@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace SME.SMESend
 {
-    class SMESender
+    public class SMESender
     {
         #region members
         private TcpClient client;
