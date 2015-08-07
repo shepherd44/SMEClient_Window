@@ -49,6 +49,8 @@
     <Compile Include="SMECollect\SMEProjectInformation.cs" />
     <Compile Include="SMECollect\SMESystemInformation.cs" />
     <Compile Include="SMESend\SMESender.cs" />
+    <Compile Include="SMEServer.cs" />
+    <Compile Include="SMEXML\SMEXMLReader.cs" />
     <Compile Include="SMEXML\SMEXMLWriter.cs" />
     <Compile Include="SMEXML\XMLHelper.cs" />
   </ItemGroup>

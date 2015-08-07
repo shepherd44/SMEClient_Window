@@ -29,15 +29,11 @@ namespace testConsole
             Console.WriteLine("-------------------------------------------");
             SME.SMEClient smeclient = new SMEClient("TestProject", null, true, "test key");
 
-            DateTime currentTime = DateTime.Now;
-            TimeSpan time = currentTime.TimeOfDay;
-            Console.WriteLine(currentTime.ToShortDateString()+":"+time.Hours.ToString());
-            Console.WriteLine(currentTime.Year.ToString()+currentTime.Month.ToString() + currentTime.Day.ToString() + currentTime.Hour.ToString());
             //exception throw
             //testclass.NullReferenceExceptionThrow();
             //testclass.CppErrorThorw();
             //testclass.ThreadErrorThrow();
-            testclass.LoadFailErrorThrow();
+            //testclass.LoadFailErrorThrow();
 
             //testclass.stacktracetest();
             //testclass.msdnenvtestcode();
@@ -47,6 +43,9 @@ namespace testConsole
             //testclass.xmlwritertest();
             //testclass.xmlwriterloadtest();
             //testclass.XMLtest();
+
+            testclass.xmlreaderloadtest();
+
         }
     }
     class testclass
@@ -262,16 +261,22 @@ namespace testConsole
         }
         public static void xmlwritertest()
         {
+            StackTrace st = new StackTrace(true);
             SMEXMLWriter xml = new SMEXMLWriter(new SMEProjectInformation("", null),
                 new SMESystemInformation(),
                 new SMEExceptionInformation(new NullReferenceException()),
-                new SMECallstackInformation(null));
+                new SMECallstackInformation(st));
             xml.SaveToXML("C:\\Dumps\\CS.xml");
         }
         public static void xmlwriterloadtest()
         {
             SMEXMLWriter xml = new SMEXMLWriter();
             xml.LoadFromXML("C:\\Dumps\\CS.xml");
+        }
+        public static void xmlreaderloadtest()
+        {
+            SMEXMLReader test = new SMEXMLReader("C:\\Dumps\\CS\\TestProject-0.0-2015-08-07-13-48-26.xml");
+            
         }
         
     }

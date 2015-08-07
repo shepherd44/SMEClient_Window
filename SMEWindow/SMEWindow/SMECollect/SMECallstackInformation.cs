@@ -13,9 +13,12 @@ namespace SME.SMECollect
     // string 단위로 method.filename.line
     public class SMECallstackInformation
     {
+        #region Members
         List<SMECallStack> m_listCallstack = new List<SMECallStack>();
         private void AddCallStack(SMECallStack smecallstack) { m_listCallstack.Add(smecallstack); }
-        
+        #endregion
+
+        #region Constructors
         //public SMECallstackInformation(Exception exception)
         //{
         //    StackTrace stacktrace = new StackTrace(true);
@@ -47,6 +50,13 @@ namespace SME.SMECollect
             }
         }
 
+        public SMECallstackInformation(XElement xelement)
+        {
+            LoadFromXElement(xelement);
+        }
+        #endregion
+
+        #region Functions
         public XElement ToXElement()
         {
             XElement xmldoc = new XElement("CallStackInformation");
@@ -56,6 +66,20 @@ namespace SME.SMECollect
                 domainstack.Add(m_listCallstack[i].ToXElement());
             
             return xmldoc;
+        }
+
+        public void LoadFromXElement(XElement xelement)
+        {
+            if (xelement.Name.ToString().Equals("CallStackInformation"))
+            {
+                //DomainStack
+                XElement el = (XElement)xelement.FirstNode;
+                //Stack
+                for (int i = 0; i < el.Elements().Count(); i++)
+                    m_listCallstack.Add(new SMECallStack(el.Elements().ElementAt(i)));
+            }
+            else
+                throw new Exception("This XElement is not CallStackInformation XElement");
         }
 
         override public string ToString()
@@ -68,7 +92,6 @@ namespace SME.SMECollect
             }
             return temp;
         }
+        #endregion
     }
-
-    
 }

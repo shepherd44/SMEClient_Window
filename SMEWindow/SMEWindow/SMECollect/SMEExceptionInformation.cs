@@ -11,6 +11,7 @@ namespace SME.SMECollect
     // 발생한 예외 정보 수집
     public class SMEExceptionInformation
     {
+        #region Members
         string m_exName = null;
         IDictionary m_exData = null;
         string m_exHelpLink = null;
@@ -18,7 +19,9 @@ namespace SME.SMECollect
         string m_exMessage = null;
         List<SMECallStack> m_listCallstack = null;
         SMEExceptionInformation m_innerException = null;
+        #endregion
 
+        #region Constructors
         public SMEExceptionInformation(Exception exception)
         {
             m_exName = exception.GetType().ToString();
@@ -31,12 +34,19 @@ namespace SME.SMECollect
                 null ? new SMEExceptionInformation(exception) : null;
         }
 
+        public SMEExceptionInformation(XElement xelement)
+        {
+            LoadFromXElement(xelement);
+        }
+        #endregion
+
+        #region Functions
         public XElement ToXElement()
         {
             XElement xmldoc = new XElement("ExeptionInformation",
                                 new XElement("Name", m_exName),
-                                new XElement("Data", DataToXElement()),
-                                new XElement("Hresult", m_exData.ToString()),
+                                new XElement(DataToXElement()),
+                                new XElement("Hresult", m_exHResult),
                                 new XElement("HelpLink", m_exHelpLink),
                                 new XElement("Message", m_exMessage)
                                 );
@@ -55,6 +65,45 @@ namespace SME.SMECollect
             xmldoc.Add(innerexception);
             
             return xmldoc;
+        }
+
+        public void LoadFromXElement(XElement xelement)
+        {
+            if (xelement.Name.ToString().Equals("ExeptionInformation"))
+            {
+                XElement el = (XElement)xelement.FirstNode;
+                m_exName = el.Value;
+                
+                // Data
+                el = (XElement)el.NextNode;
+                m_exData = new Dictionary<string, string>();
+                for (int i = 0; i < el.Elements().Count(); i++)
+                {
+                    XElement temp = el.Elements().ElementAt(i);
+                    m_exData.Add(temp.Name.ToString(), temp.Value);
+                }
+                el = (XElement)el.NextNode;
+                m_exHResult = int.Parse(el.Value);
+                el = (XElement)el.NextNode;
+                m_exHelpLink = el.Value;
+                el = (XElement)el.NextNode;
+                m_exMessage = el.Value;
+                
+                el = (XElement)el.NextNode;
+                m_listCallstack = new List<SMECallStack>();
+                for (int i = 0; i < el.Elements().Count(); i++)
+			    {
+                    m_listCallstack.Add(new SMECallStack(el.Elements().ElementAt(i)));
+			    }
+
+                el = (XElement)el.NextNode;
+                if (el.FirstNode != null)
+                    m_innerException = new SMEExceptionInformation((XElement)el.FirstNode);
+                else
+                    m_innerException = null;
+            }
+            else
+                throw new Exception("This XElement is not ExceptionInformation XElement");
         }
 
         override public string ToString()
@@ -85,5 +134,6 @@ namespace SME.SMECollect
 
             return xmldoc;
         }
+        #endregion
     }
 }
