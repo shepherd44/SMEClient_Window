@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,7 +49,22 @@
     <Compile Include="SMECollect\SMEExceptionInformation.cs" />
     <Compile Include="SMECollect\SMEProjectInformation.cs" />
     <Compile Include="SMECollect\SMESystemInformation.cs" />
-    <Compile Include="SMESend\SMESender.cs" />
+    <Compile Include="SMEDumpAnalyze\MinidumpStream\MiniDumpAssertionInfo.cs" />
+    <Compile Include="SMEDumpAnalyze\MinidumpStream\MiniDumpBreakpadInfo.cs" />
+    <Compile Include="SMEDumpAnalyze\MinidumpStream\MiniDumpException.cs" />
+    <Compile Include="SMEDumpAnalyze\MinidumpStream\MinidumpExceptionStream.cs" />
+    <Compile Include="SMEDumpAnalyze\MinidumpStream\MiniDumpLocationDescriptor.cs" />
+    <Compile Include="SMEDumpAnalyze\MinidumpStream\MiniDumpMiscInfo.cs" />
+    <Compile Include="SMEDumpAnalyze\MinidumpStream\MiniDumpModule.cs" />
+    <Compile Include="SMEDumpAnalyze\MinidumpStream\Win32TimeZoneInformation.cs" />
+    <Compile Include="SMEDumpAnalyze\Native\dbghelp.cs" />
+    <Compile Include="SMEDumpAnalyze\Native\MiniDumpType.cs" />
+    <Compile Include="SMEDumpAnalyze\Native\NativeMethods.cs" />
+    <Compile Include="SMEDumpAnalyze\Native\timezoneapi.cs" />
+    <Compile Include="SMEDumpAnalyze\Native\windows.cs" />
+    <Compile Include="SMEDumpAnalyze\SMEMinidumpReader.cs" />
+    <Compile Include="SMENet\SMEReceiver.cs" />
+    <Compile Include="SMENet\SMESender.cs" />
     <Compile Include="SMEServer.cs" />
     <Compile Include="SMEXML\SMEXMLReader.cs" />
     <Compile Include="SMEXML\SMEXMLWriter.cs" />
