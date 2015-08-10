@@ -29,25 +29,80 @@
         private void InitializeComponent()
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.파일ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.errorGenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generalErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nullRefErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.filePathErrorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.threadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nullReferenceErrorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.filePathErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.파일ToolStripMenuItem});
+            this.errorGenToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(551, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // 파일ToolStripMenuItem
+            // errorGenToolStripMenuItem
             // 
-            this.파일ToolStripMenuItem.Name = "파일ToolStripMenuItem";
-            this.파일ToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
-            this.파일ToolStripMenuItem.Text = "파일";
+            this.errorGenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.generalErrorToolStripMenuItem,
+            this.threadToolStripMenuItem});
+            this.errorGenToolStripMenuItem.Name = "errorGenToolStripMenuItem";
+            this.errorGenToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
+            this.errorGenToolStripMenuItem.Text = "Error_Gen";
+            // 
+            // generalErrorToolStripMenuItem
+            // 
+            this.generalErrorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.nullRefErrorToolStripMenuItem,
+            this.filePathErrorToolStripMenuItem1});
+            this.generalErrorToolStripMenuItem.Name = "generalErrorToolStripMenuItem";
+            this.generalErrorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.generalErrorToolStripMenuItem.Text = "General_Error";
+            // 
+            // nullRefErrorToolStripMenuItem
+            // 
+            this.nullRefErrorToolStripMenuItem.Name = "nullRefErrorToolStripMenuItem";
+            this.nullRefErrorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.nullRefErrorToolStripMenuItem.Text = "NullRefError";
+            this.nullRefErrorToolStripMenuItem.Click += new System.EventHandler(this.nullRefErrorToolStripMenuItem_Click);
+            // 
+            // filePathErrorToolStripMenuItem1
+            // 
+            this.filePathErrorToolStripMenuItem1.Name = "filePathErrorToolStripMenuItem1";
+            this.filePathErrorToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.filePathErrorToolStripMenuItem1.Text = "FilePathError";
+            this.filePathErrorToolStripMenuItem1.Click += new System.EventHandler(this.filePathErrorToolStripMenuItem1_Click);
+            // 
+            // threadToolStripMenuItem
+            // 
+            this.threadToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.nullReferenceErrorToolStripMenuItem1,
+            this.filePathErrorToolStripMenuItem});
+            this.threadToolStripMenuItem.Name = "threadToolStripMenuItem";
+            this.threadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.threadToolStripMenuItem.Text = "Thread_Error";
+            // 
+            // nullReferenceErrorToolStripMenuItem1
+            // 
+            this.nullReferenceErrorToolStripMenuItem1.Name = "nullReferenceErrorToolStripMenuItem1";
+            this.nullReferenceErrorToolStripMenuItem1.Size = new System.Drawing.Size(173, 22);
+            this.nullReferenceErrorToolStripMenuItem1.Text = "NullReferenceError";
+            this.nullReferenceErrorToolStripMenuItem1.Click += new System.EventHandler(this.nullReferenceErrorToolStripMenuItem1_Click);
+            // 
+            // filePathErrorToolStripMenuItem
+            // 
+            this.filePathErrorToolStripMenuItem.Name = "filePathErrorToolStripMenuItem";
+            this.filePathErrorToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.filePathErrorToolStripMenuItem.Text = "FilePathError";
+            this.filePathErrorToolStripMenuItem.Click += new System.EventHandler(this.filePathErrorToolStripMenuItem_Click);
             // 
             // SMEClientForm
             // 
@@ -68,7 +123,13 @@
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem 파일ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem errorGenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem threadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem nullReferenceErrorToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem filePathErrorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generalErrorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem nullRefErrorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem filePathErrorToolStripMenuItem1;
     }
 }
 

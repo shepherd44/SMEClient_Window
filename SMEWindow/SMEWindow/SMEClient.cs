@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections;
+﻿using google_breakpad;
+using SME.SMECollect;
+using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Windows.Forms;
-
-using google_breakpad;
-using SME.SMECollect;
-using System.Runtime.ExceptionServices;
-using System.Runtime.CompilerServices;
 
 [assembly: RuntimeCompatibility(WrapNonExceptionThrows = true)]
 
@@ -21,17 +15,13 @@ namespace SME
     {
     #region members
         public static SMEProjectInformation ProjectInfo { get; set; }
-        // 객체를 생성해준 앱도메인
-        public static AppDomain CurrentDomain { get; protected internal set;}
         // cpp 감시를 시작할 지 결정
         // 감시를 시작할 경우 true 설정
         public bool UseCPP { get; set; }
         // Server에서 프로젝트를 구별해 줄 APIKey
-        public String APIKEY { get; protected internal set; }
+        public static String APIKEY { get; set; }
         // breakpad initializing wrapper
-        private breakpadWrapper m_Wrapper = null;
-        // exception information collector
-        private static SMECollector m_SMECollector = null;
+        private static breakpadWrapper m_Wrapper = null;
     #endregion
         
     #region 생성자
@@ -51,7 +41,7 @@ namespace SME
             Application.ThreadException += new ThreadExceptionEventHandler(SMEThreaqdExceptionHandler);
 
             // AppDomain 영역 핸들러 설정
-            CurrentDomain = AppDomain.CurrentDomain;
+            AppDomain CurrentDomain = AppDomain.CurrentDomain;
             // First Chance Exception Handler 설정
             CurrentDomain.FirstChanceException += SMEFirstChanceExceptionHandler;
             // Non-UI Thread Unhandled Exception Handler 설정
@@ -92,7 +82,8 @@ namespace SME
         private static void SMEThreaqdExceptionHandler(object sender, ThreadExceptionEventArgs t)
         {
             Exception exception = t.Exception;
-            Console.WriteLine("ThreadException");
+            StackTrace stacktrace = new StackTrace(true);
+            SMECollector smecollector = new SMECollector(exception, stacktrace, ProjectInfo);
         }
     #endregion
     }

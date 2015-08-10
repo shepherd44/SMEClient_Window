@@ -14,8 +14,6 @@
  *     <CLRVersion></CLRVersion>
  *     <Is64BitOS></Is64BitOS>
  *     <IS64BitProcess></Is64BitProcess>
- *     <PageSize></PageSize>
- *     <TickCount></TickCount>
  *   </SystemInformation>
  *   <ExceptionInformation>
  *      <Name></Name>
@@ -51,20 +49,31 @@
  ***************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 
 using System.Diagnostics;
-using System.Collections;
 using SME.SMEXML;
 
 namespace SME.SMECollect
 {
-    public class SMECollector
+    public class SMECollector : IDisposable
     {
         #region Functions
+        public void Dispose()
+        {
+            m_sysInfo = null;
+            m_projectinfo = null;
+            m_exceptioninfo = null;
+            m_callstackinfo = null;
+            m_ErrorCallStack = null;
+            m_CollectThread = null;
+            m_CollectSemaphore = null;
+            m_smexmlwriter = null;
+            m_SaveXMLThread = null;
+            //m_XMLFolderPath = "C:\\Dumps\\CS\\";
+            //m_currentTime = null;
+            m_XMLFilePath = null;
+        }
         // Collect Error Information
         // 는 class 생성과 동시에 만듬.
         // Exception information, CallStack Information은 예외 발생시 생성
@@ -218,6 +227,11 @@ namespace SME.SMECollect
         DateTime m_currentTime = DateTime.Now;
         string m_XMLFilePath = null;
         #endregion
+
+        void IDisposable.Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
     
 }

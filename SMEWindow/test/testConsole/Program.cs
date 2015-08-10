@@ -28,12 +28,11 @@ namespace testConsole
             Console.WriteLine("test Console");
             Console.WriteLine("-------------------------------------------");
             SME.SMEClient smeclient = new SMEClient("TestProject", null, true, "test key");
-
             //exception throw
             //testclass.NullReferenceExceptionThrow();
             //testclass.CppErrorThorw();
             //testclass.ThreadErrorThrow();
-            testclass.LoadFailErrorThrow();
+            //testclass.LoadFailErrorThrow();
 
             //testclass.stacktracetest();
             //testclass.msdnenvtestcode();
@@ -44,7 +43,7 @@ namespace testConsole
             //testclass.xmlwriterloadtest();
             //testclass.XMLtest();
 
-            testclass.xmlreaderloadtest();
+            //testclass.xmlreaderloadtest();
 
         }
     }

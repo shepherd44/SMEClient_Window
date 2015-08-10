@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using SME;
+
 namespace SMETestClient
 {
     static class Program
@@ -14,6 +16,8 @@ namespace SMETestClient
         [STAThread]
         static void Main()
         {
+            SMEClient smeclient = new SMEClient("SMETestClient", null, false, "testkey");
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new SMEClientForm());
