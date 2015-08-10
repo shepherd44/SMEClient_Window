@@ -76,7 +76,10 @@
       <Name>breakpadWrapper</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="SMEDumpAnalyze\MinidumpStream\License.md" />
+    <None Include="SMEDumpAnalyze\Native\License.md" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -33,7 +33,7 @@ namespace testConsole
             //testclass.NullReferenceExceptionThrow();
             //testclass.CppErrorThorw();
             //testclass.ThreadErrorThrow();
-            //testclass.LoadFailErrorThrow();
+            testclass.LoadFailErrorThrow();
 
             //testclass.stacktracetest();
             //testclass.msdnenvtestcode();

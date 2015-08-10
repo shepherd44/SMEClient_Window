@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SMETestServer
+namespace SMETestClient
 {
-    public partial class Form1 : Form
+    public partial class SMEClientForm : Form
     {
-        public Form1()
+        public SMEClientForm()
         {
             InitializeComponent();
         }
