@@ -1,10 +1,4 @@
-﻿using Microsoft.Win32.SafeHandles;
-using System.Runtime.InteropServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 
 namespace SME.SMEDumpAnalyze.Native
 {

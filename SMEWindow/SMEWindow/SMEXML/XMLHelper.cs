@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.IO;
 using System.Xml.Linq;
-
-using SME.SMECollect;
 
 namespace SME.SMEXML
 {

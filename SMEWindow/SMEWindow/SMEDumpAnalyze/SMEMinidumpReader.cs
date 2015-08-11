@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using System.IO;
 using System.ComponentModel;
 using System.IO.MemoryMappedFiles; // MemoryMap을 하기 위해 필요한 Namespace
 using System.Runtime.InteropServices;//Marshaling을 위해 필요한 Namespace

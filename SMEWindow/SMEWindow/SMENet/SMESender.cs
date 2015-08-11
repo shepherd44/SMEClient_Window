@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 //Tcp를 이용해 파일을 보낼 때 필요한 namespaces
-using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using System.Threading;
