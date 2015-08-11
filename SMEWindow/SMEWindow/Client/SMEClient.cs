@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 [assembly: RuntimeCompatibility(WrapNonExceptionThrows = true)]
 
-namespace SME
+namespace SME.Client
 {
     public class SMEClient
     {
