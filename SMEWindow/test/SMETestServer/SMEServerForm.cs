@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using SME.Server;
+
 namespace SMETestServer
 {
     public partial class SMEServerForm : Form
@@ -15,6 +17,14 @@ namespace SMETestServer
         public SMEServerForm()
         {
             InitializeComponent();
+            SMEServer.Start();
         }
+
+        private void SMEServerForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SMEServer.Close();
+        }
+
+        
     }
 }

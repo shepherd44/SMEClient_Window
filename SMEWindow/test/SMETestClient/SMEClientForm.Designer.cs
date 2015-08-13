@@ -36,13 +36,16 @@
             this.threadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nullReferenceErrorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.filePathErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dumpSendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileSendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.errorGenToolStripMenuItem});
+            this.errorGenToolStripMenuItem,
+            this.dumpSendToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(551, 24);
@@ -64,20 +67,20 @@
             this.nullRefErrorToolStripMenuItem,
             this.filePathErrorToolStripMenuItem1});
             this.generalErrorToolStripMenuItem.Name = "generalErrorToolStripMenuItem";
-            this.generalErrorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.generalErrorToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.generalErrorToolStripMenuItem.Text = "General_Error";
             // 
             // nullRefErrorToolStripMenuItem
             // 
             this.nullRefErrorToolStripMenuItem.Name = "nullRefErrorToolStripMenuItem";
-            this.nullRefErrorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.nullRefErrorToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.nullRefErrorToolStripMenuItem.Text = "NullRefError";
             this.nullRefErrorToolStripMenuItem.Click += new System.EventHandler(this.nullRefErrorToolStripMenuItem_Click);
             // 
             // filePathErrorToolStripMenuItem1
             // 
             this.filePathErrorToolStripMenuItem1.Name = "filePathErrorToolStripMenuItem1";
-            this.filePathErrorToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.filePathErrorToolStripMenuItem1.Size = new System.Drawing.Size(141, 22);
             this.filePathErrorToolStripMenuItem1.Text = "FilePathError";
             this.filePathErrorToolStripMenuItem1.Click += new System.EventHandler(this.filePathErrorToolStripMenuItem1_Click);
             // 
@@ -87,7 +90,7 @@
             this.nullReferenceErrorToolStripMenuItem1,
             this.filePathErrorToolStripMenuItem});
             this.threadToolStripMenuItem.Name = "threadToolStripMenuItem";
-            this.threadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.threadToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.threadToolStripMenuItem.Text = "Thread_Error";
             // 
             // nullReferenceErrorToolStripMenuItem1
@@ -103,6 +106,21 @@
             this.filePathErrorToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.filePathErrorToolStripMenuItem.Text = "FilePathError";
             this.filePathErrorToolStripMenuItem.Click += new System.EventHandler(this.filePathErrorToolStripMenuItem_Click);
+            // 
+            // dumpSendToolStripMenuItem
+            // 
+            this.dumpSendToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileSendToolStripMenuItem});
+            this.dumpSendToolStripMenuItem.Name = "dumpSendToolStripMenuItem";
+            this.dumpSendToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
+            this.dumpSendToolStripMenuItem.Text = "Dump_Send";
+            // 
+            // fileSendToolStripMenuItem
+            // 
+            this.fileSendToolStripMenuItem.Name = "fileSendToolStripMenuItem";
+            this.fileSendToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fileSendToolStripMenuItem.Text = "FileSend";
+            this.fileSendToolStripMenuItem.Click += new System.EventHandler(this.fileSendToolStripMenuItem_Click);
             // 
             // SMEClientForm
             // 
@@ -130,6 +148,8 @@
         private System.Windows.Forms.ToolStripMenuItem generalErrorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem nullRefErrorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem filePathErrorToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem dumpSendToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fileSendToolStripMenuItem;
     }
 }
 

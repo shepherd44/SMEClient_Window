@@ -41,7 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SMEClient.cs" />
+    <Compile Include="Client\SMEClient.cs" />
+    <Compile Include="Data\ErrorCode.cs" />
     <Compile Include="SMECollect\SMECallStack.cs" />
     <Compile Include="SMECollect\SMECallstackInformation.cs" />
     <Compile Include="SMECollect\SMECollector.cs" />
@@ -63,9 +64,10 @@
     <Compile Include="SMEDumpAnalyze\Native\timezoneapi.cs" />
     <Compile Include="SMEDumpAnalyze\Native\windows.cs" />
     <Compile Include="SMEDumpAnalyze\SMEMinidumpReader.cs" />
-    <Compile Include="SMENet\SMEReceiver.cs" />
+    <Compile Include="SMENet\ISMEListener.cs" />
+    <Compile Include="SMENet\SMEListener.cs" />
     <Compile Include="SMENet\SMESender.cs" />
-    <Compile Include="SMEServer.cs" />
+    <Compile Include="Server\SMEServer.cs" />
     <Compile Include="SMEXML\SMEXMLReader.cs" />
     <Compile Include="SMEXML\SMEXMLWriter.cs" />
     <Compile Include="SMEXML\XMLHelper.cs" />
