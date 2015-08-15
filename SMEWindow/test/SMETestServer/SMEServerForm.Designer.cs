@@ -36,7 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Name = "SMEServerForm";
-            this.Text = "Form1";
+            this.Text = "SMETestServer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SMEServerForm_FormClosing);
             this.ResumeLayout(false);
 

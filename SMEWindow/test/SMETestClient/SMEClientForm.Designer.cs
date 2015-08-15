@@ -118,7 +118,7 @@
             // fileSendToolStripMenuItem
             // 
             this.fileSendToolStripMenuItem.Name = "fileSendToolStripMenuItem";
-            this.fileSendToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fileSendToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.fileSendToolStripMenuItem.Text = "FileSend";
             this.fileSendToolStripMenuItem.Click += new System.EventHandler(this.fileSendToolStripMenuItem_Click);
             // 
@@ -130,7 +130,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "SMEClientForm";
-            this.Text = "Form1";
+            this.Text = "SMETestClient";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

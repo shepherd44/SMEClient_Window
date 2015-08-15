@@ -11,7 +11,7 @@ namespace SME.SMENet
 {
     //public delegate void AfterReceive();
 
-    public class SMEListener : ISMEListener, IDisposable
+    public class SMEListener : IDisposable
     {
         #region Members
         private TcpListener tcpListener;
@@ -114,7 +114,7 @@ namespace SME.SMENet
         {
             tcpClient = client;
             netStream = client.GetStream();
-            //netStream.ReadTimeout = 1000;
+            netStream.ReadTimeout = 1000;
         }
         #endregion
 
@@ -122,35 +122,43 @@ namespace SME.SMENet
         // Client로부터 데이터를 받는 함수
         public async void Receive(Object state)
         {
-            // 파일 크기
-            byte[] buffer = new byte[8];//처음 파일크기를 받아오는데 사용하는 buffer
-            netStream.Read(buffer, 0, buffer.Length);//파일크기 수신
-            fileLength = BitConverter.ToInt32(buffer, 0);
-            
-            // 파일 이름 길이 
-            buffer = new byte[4];
-            netStream.Read(buffer, 0, buffer.Length);
-            int fileNameLength = BitConverter.ToInt32(buffer, 0);
-
-            // 파일 이름
-            buffer = new byte[fileNameLength];
-            netStream.Read(buffer, 0, fileNameLength);
-            fileName = System.Text.Encoding.UTF8.GetString(buffer);
-
-            // 파일 내용
-            buffer = new byte[1024];
-            fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
-            int totalLength = 0;
-            int receiveLength = 0;
-            while (totalLength < fileLength)
+            try
             {
-                receiveLength = netStream.Read(buffer, 0, buffer.Length);
-                fileStream.Write(buffer, 0, receiveLength);
-                totalLength += receiveLength;
+                // 파일 크기
+                byte[] buffer = new byte[8];//처음 파일크기를 받아오는데 사용하는 buffer
+                netStream.Read(buffer, 0, buffer.Length);//파일크기 수신
+                fileLength = BitConverter.ToInt32(buffer, 0);
+
+                // 파일 이름 길이 
+                buffer = new byte[4];
+                netStream.Read(buffer, 0, buffer.Length);
+                int fileNameLength = BitConverter.ToInt32(buffer, 0);
+
+                // 파일 이름
+                buffer = new byte[fileNameLength];
+                netStream.Read(buffer, 0, fileNameLength);
+                fileName = System.Text.Encoding.UTF8.GetString(buffer);
+
+                // 파일 내용
+                buffer = new byte[1024];
+                fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+                int totalLength = 0;
+                int receiveLength = 0;
+                while (totalLength < fileLength)
+                {
+                    receiveLength = netStream.Read(buffer, 0, buffer.Length);
+                    fileStream.Write(buffer, 0, receiveLength);
+                    totalLength += receiveLength;
+                }
             }
-            
-            //SMEListener.afterReceive();
-            this.Dispose();
+            catch(Exception e)
+            {
+
+            }
+            finally
+            {
+                this.Dispose();
+            }
         }
         #endregion
 
