@@ -21,8 +21,7 @@ namespace google_breakpad
 
 		filepath += filename;
 
-		TCPSender^ sender = gcnew TCPSender(gcnew System::String("127.0.0.1"),
-															filepath, filename);
+		TCPSender^ sender = gcnew TCPSender(gcnew System::String("127.0.0.1"), filepath, filename);
 		sender->FileSend();
 		return true;
 	}
@@ -33,7 +32,7 @@ namespace google_breakpad
 		int ret = GetFileAttributes(dumpfolder_path);
 		if (ret == -1)
 			CreateDirectory(dumpfolder_path, NULL);
-		
+
 		handler = new ExceptionHandler(dumpfolder_path, NULL, ResultCallBack, NULL, ExceptionHandler::HANDLER_ALL);
 	}
 	breakpadWrapper::breakpadWrapper(wchar_t* ip, int port)

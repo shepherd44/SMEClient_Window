@@ -31,7 +31,7 @@ namespace google_breakpad {
 		wchar_t temp[256], *sp;
 		wcscpy_s(temp, full_path);
 		sp = temp;
-		while ((sp = wcschr(sp, '\\')))
+		while ((sp = wcschr(sp, L'\\')))
 		{
 			if (sp > temp && *(sp - 1) != ':')
 			{

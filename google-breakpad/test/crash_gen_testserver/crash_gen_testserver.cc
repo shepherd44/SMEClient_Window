@@ -4,7 +4,7 @@
 #include "client\windows\crash_generation\crash_generation_client.h"
 #include "client\windows\handler\exception_handler.h"
 #include "client\windows\crash_generation\client_info.h"
-#include "client\windows\sender\crash_report_sender.h"
+//#include "client\windows\sender\crash_report_sender.h"
 
 #include <iostream>
 #include <stdio.h>
@@ -16,21 +16,21 @@ namespace google_breakpad
 	// 생성자에 파일이름 넘겨주면 파일 읽어들임.
 	// SendCrashReport(wstring url, map<wstring, wstring> parameters,
 	//					wstring dump_file_name, wstring* report_code)
-	CrashReportSender* g_crashsender = NULL;
+	//CrashReportSender* g_crashsender = NULL;
 	
-	void InitCrashReportSender(std::wstring& filename)
-	{
-		g_crashsender = new CrashReportSender(filename);
-	}
-	void ClearCrashReportSender()
-	{
-		if (g_crashsender == NULL)
-			return;
-		else
-		{
-			delete g_crashsender;
-		}
-	}
+	//void InitCrashReportSender(std::wstring& filename)
+	//{
+	//	g_crashsender = new CrashReportSender(filename);
+	//}
+	//void ClearCrashReportSender()
+	//{
+	//	if (g_crashsender == NULL)
+	//		return;
+	//	else
+	//	{
+	//		delete g_crashsender;
+	//	}
+	//}
 	// Named pipe
 	wchar_t g_PipeName[] = L"\\\\.\\pipe\\BreakpadCrashServices\\TestServer";
 	
@@ -153,14 +153,14 @@ int main(int argc, char** argv)
 {
 	std::wstring chekpointfilename;
 	chekpointfilename = L"C:\\Dump\\checkpoint";
-	google_breakpad::InitCrashReportSender(chekpointfilename);
-	std::map<std::wstring, std::wstring> umap;
+	//google_breakpad::InitCrashReportSender(chekpointfilename);
+	//std::map<std::wstring, std::wstring> umap;
 	// 전송객체 초기화
-	google_breakpad::g_crashsender->SendCrashReport(L"http://192.168.23.152",
+	/*google_breakpad::g_crashsender->SendCrashReport(L"http://192.168.23.152",
 		umap,
 		L"C:\\Dumps\\Server\\45055080-e02c-496f-bdc6-c5b0b404953b.dmp",
 		NULL
-		);
+		);*/
 
 	while (1)
 	{
