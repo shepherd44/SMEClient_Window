@@ -16,7 +16,7 @@ namespace SMETestClient
         [STAThread]
         static void Main()
         {
-            SMEClient smeclient = new SMEClient("SMETestClient", null, false, "testkey");
+            SMEClient smeclient = new SMEClient("SMETestClient", null, true, "testkey");
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

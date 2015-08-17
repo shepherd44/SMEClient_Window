@@ -56,7 +56,7 @@ namespace NetLib
 
         #region Functions
         //Send 쓰레드
-        public void FileSend()
+        public async void FileSend()
         {
             long count = fileLength / 1024 + 1; //1024바이트씩 보낼 횟수 계산
             byte[] buffer = new byte[1024]; //데이터를 읽어서 보낼 byte변수

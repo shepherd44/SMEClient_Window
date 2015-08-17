@@ -11,7 +11,7 @@ using System.Threading;
 using System.Xml.Linq;
 
 using SME.Client;
-using SME.SMENet;
+using NetLib;
 
 namespace SMETestClient
 {
@@ -69,7 +69,7 @@ namespace SMETestClient
 
         private void fileSendToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SMESender sendertemp = new SMESender("127.0.0.1", "C:\\Dumps\\CS\\SMETestClient-0.0-2015-08-12-20-16-08.xml", "SMETestClient-0.0-2015-08-12-20-16-08.xml");
+            TCPSender sendertemp = new TCPSender("127.0.0.1", "C:\\Dumps\\CS\\SMETestClient-0.0-2015-08-12-20-16-08.xml", "SMETestClient-0.0-2015-08-12-20-16-08.xml");
             
         }
     }

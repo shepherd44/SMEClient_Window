@@ -78,6 +78,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NetLib\NetLib.csproj">
+      <Project>{ef13c77a-1405-45bc-ba8b-7122cb81fa25}</Project>
+      <Name>NetLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\SMEWindow\SMEWindow.csproj">
       <Project>{974b5c4f-e77e-4fa1-ab6c-a5b9b857fea6}</Project>
       <Name>SMEWindow</Name>
