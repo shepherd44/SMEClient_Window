@@ -114,6 +114,9 @@
     <ProjectReference Include="..\..\google-breakpad\src\client\windows\handler\exception_handler.vcxproj">
       <Project>{d2921270-f22b-9e45-d11b-a9a9f381909f}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\NetLib\NetLib.csproj">
+      <Project>{ef13c77a-1405-45bc-ba8b-7122cb81fa25}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

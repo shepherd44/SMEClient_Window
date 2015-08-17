@@ -1,5 +1,5 @@
 ﻿using System.Xml.Linq;
-using SME.SMECollect;
+using SME.SMECollect.Data;
 
 namespace SME.SMEXML
 {

@@ -1,4 +1,5 @@
 ﻿using google_breakpad;
+using SME.SMECollect.Data;
 using SME.SMECollect;
 using System;
 using System.Diagnostics;

@@ -93,9 +93,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SMEWindow\SMEWindow.csproj">
-      <Project>{974b5c4f-e77e-4fa1-ab6c-a5b9b857fea6}</Project>
-      <Name>SMEWindow</Name>
+    <ProjectReference Include="..\..\SMEWindow_Server\SMEWindow_Server.csproj">
+      <Project>{e05d8615-607f-47c3-914e-7bacb5d277f0}</Project>
+      <Name>SMEWindow_Server</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
