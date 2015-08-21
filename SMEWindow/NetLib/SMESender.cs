@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 //Tcp를 이용해 파일을 보낼 때 필요한 namespaces
 using System.Net.Sockets;
 using System.IO;
@@ -18,25 +19,37 @@ namespace NetLib
 
         #region Creator
         //생성자 인자로 ServerIP와 보낼 파일의 FilePath를 받는다.
-        public TCPSender(string ipAddress, string FilePath, string FileName)
+        public TCPSender(string ipAddress, int port, string FilePath, string FileName, int apikey)
         {
-            tcpClient = new TcpClient(ipAddress, 3000); //TcpClient 객체 생성 및 ip와 연결
-            netStream = tcpClient.GetStream(); //데이터를 보내고 받는 NetworkStream 반환
-            fileStream = File.OpenRead(FilePath); //서버로 보낼 파일을 FileStream으로 부른다.
-            
-            // 파일 크기 전송
-            fileLength = fileStream.Length; //파일의 크기를 저장한다.
-            byte[] buffer = BitConverter.GetBytes(fileLength);
-            netStream.Write(buffer, 0, buffer.Length);
+            try
+            {
+                tcpClient = new TcpClient(ipAddress, port); //TcpClient 객체 생성 및 ip와 연결
+                netStream = tcpClient.GetStream(); //데이터를 보내고 받는 NetworkStream 반환
+                fileStream = File.OpenRead(FilePath); //서버로 보낼 파일을 FileStream으로 부른다.
 
-            // 파일 이름, 이름 크기 전송
-            byte[] filenamebuffer = System.Text.Encoding.UTF8.GetBytes(FileName);
-            buffer = BitConverter.GetBytes(filenamebuffer.Length);
-            netStream.Write(buffer, 0, buffer.Length);
-            netStream.Write(filenamebuffer, 0, filenamebuffer.Length);
+                // 파일 크기 전송
+                fileLength = fileStream.Length; //파일의 크기를 저장한다.
+                byte[] buffer = BitConverter.GetBytes(fileLength);
+                netStream.Write(buffer, 0, buffer.Length);
 
-            send = new Thread(new ThreadStart(FileSend)); //send 쓰레드 생성
-            send.Start(); //쓰레드 시작으로 상태 전환
+                // 파일 이름, 이름 크기 전송
+                byte[] filenamebuffer = System.Text.Encoding.UTF8.GetBytes(FileName);
+                buffer = BitConverter.GetBytes(filenamebuffer.Length);
+                netStream.Write(buffer, 0, buffer.Length);
+                netStream.Write(filenamebuffer, 0, filenamebuffer.Length);
+
+                // APIkey
+                buffer = BitConverter.GetBytes(apikey);
+                netStream.Write(buffer, 0, buffer.Length);
+
+                FileSend();
+                //send = new Thread(new ThreadStart(FileSend)); //send 쓰레드 생성
+                //send.Start(); //쓰레드 시작으로 상태 전환
+            }
+            catch(Exception e)
+            {
+                
+            }
         }
         //소멸자
         ~TCPSender()
@@ -56,7 +69,7 @@ namespace NetLib
 
         #region Functions
         //Send 쓰레드
-        public async void FileSend()
+        public void FileSend()
         {
             long count = fileLength / 1024 + 1; //1024바이트씩 보낼 횟수 계산
             byte[] buffer = new byte[1024]; //데이터를 읽어서 보낼 byte변수
@@ -67,7 +80,6 @@ namespace NetLib
                 readLength = fileStream.Read(buffer, 0, buffer.Length);
                 netStream.Write(buffer, 0, readLength);
             }
-
             tcpClient.Close();
         }
 
@@ -96,9 +108,12 @@ namespace NetLib
                 tcpClient.Close();
                 tcpClient = null;
             }
-            if (send.IsAlive)
-                send.Abort();
-            send = null;
+            if (send != null)
+            {
+                if(send.IsAlive)
+                    send.Abort();
+                send = null;
+            }
         }
     }
 }

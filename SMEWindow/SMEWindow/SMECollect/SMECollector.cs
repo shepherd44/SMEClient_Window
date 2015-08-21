@@ -71,6 +71,12 @@ namespace SME.SMECollect
         private SMEProjectInformation m_projectinfo = null;
         private SMEExceptionInformation m_exceptioninfo = null;
         private SMECallstackInformation m_callstackinfo = null;
+
+        public SMESystemInformation SysInfo { get { return m_sysInfo; } }
+        public SMEProjectInformation ProjectInfo { get { return m_projectinfo; } }
+        public SMEExceptionInformation ExceptionInfo { get { return m_exceptioninfo; } }
+        public SMECallstackInformation CallStackInfo { get { return m_callstackinfo; } }
+
         // stacktrace(thread가 달라서 미리 생성할 필요가 있음)
         [NonSerialized]
         StackTrace m_ErrorCallStack = null;
@@ -78,19 +84,20 @@ namespace SME.SMECollect
         [NonSerialized]
         private Thread m_CollectThread = null;
         // 정보를 모으는 중 xml파일로 저장하는걸 방지하기 위해 semaphore 생성
-        [NonSerialized]
-        private Semaphore m_CollectSemaphore = null;
+        public Semaphore CollectSemaphore { get; set; }
         // xml관리 함수
         [NonSerialized]
         private SMEXMLWriter m_smexmlwriter = null;
         [NonSerialized]
         private Thread m_SaveXMLThread = null;
+        public Semaphore SaveSemaphore { get; protected internal set; }
 
         // 덤프xml파일 저장 위치
         // 파일명 날짜로 변경 필요
-        const string m_XMLFolderPath = "C:\\Dumps\\CS\\";
         DateTime m_currentTime = DateTime.Now;
-        string m_XMLFilePath = null;
+        public string XMLFolderPath { get; set; }
+        public string XMLFileName { get; protected internal set; }
+        public string XMLFilePath { get; protected internal set; }
         #endregion
 
         #region Functions
@@ -107,7 +114,7 @@ namespace SME.SMECollect
             CollectCallStack(exception);
             // Collect 작업 끝
             // Semaphore lock 해제 -> Save 작업 시작
-            m_CollectSemaphore.Release(1);
+            CollectSemaphore.Release(1);
         }
 
         // m_ErrorCallStack = 에러가 발생한 thread의 StackTrace
@@ -129,27 +136,31 @@ namespace SME.SMECollect
             m_exceptioninfo = new SMEExceptionInformation(exception);
         }
 
-        public void SaveToXML(string path)
+        private void SaveToXML(string path)
         {
-            m_CollectSemaphore.WaitOne();
+            CollectSemaphore.WaitOne();
             m_smexmlwriter = new SMEXMLWriter(m_projectinfo,
                                                 m_sysInfo,
                                                 m_exceptioninfo,
                                                 m_callstackinfo);
             m_smexmlwriter.SaveToXML(path);
-            m_CollectSemaphore.Release(1);
+            CollectSemaphore.Release(1);
+            SaveSemaphore.Release(1);
+
         }
 
-        public void SaveToXML()
+        private void SaveToXML()
         {
-            m_CollectSemaphore.WaitOne();
+            CollectSemaphore.WaitOne();
             m_smexmlwriter = new SMEXMLWriter(m_projectinfo,
                                               m_sysInfo,
                                               m_exceptioninfo,
                                               m_callstackinfo);
-            DateToFilePath();
-            m_smexmlwriter.SaveToXML(m_XMLFilePath);
-            m_CollectSemaphore.Release(1);
+            DateToFileName();
+            m_smexmlwriter.SaveToXML(XMLFilePath);
+            CollectSemaphore.Release(1);
+            SaveSemaphore.Release(1);
+
         }
 
         public override string ToString()
@@ -157,27 +168,36 @@ namespace SME.SMECollect
             return base.ToString();
         }
 
-        private void DateToFilePath()
+        private void DateToFileName()
         {
-            m_XMLFilePath = m_XMLFolderPath;
-            m_XMLFilePath += m_projectinfo.Name.Trim() + "-";
-            m_XMLFilePath += m_projectinfo.m_Version.ToString() + "-";
-            m_XMLFilePath += m_currentTime.ToShortDateString() + "-";
+            XMLFileName = string.Empty;
+            XMLFileName += m_projectinfo.Name.Trim() + "-";
+            XMLFileName += m_projectinfo.m_Version.ToString() + "-";
+            XMLFileName += m_currentTime.ToShortDateString() + "-";
             if (m_currentTime.Hour < 10)
-                m_XMLFilePath += "0" + m_currentTime.Hour.ToString() + "-";
+                XMLFileName += "0" + m_currentTime.Hour.ToString() + "-";
             else
-                m_XMLFilePath += m_currentTime.Hour.ToString() + "-";
+                XMLFileName += m_currentTime.Hour.ToString() + "-";
             if (m_currentTime.Minute < 10)
-                m_XMLFilePath += "0" + m_currentTime.Minute.ToString() + "-";
+                XMLFileName += "0" + m_currentTime.Minute.ToString() + "-";
             else
-                m_XMLFilePath += m_currentTime.Minute.ToString() + "-";
+                XMLFileName += m_currentTime.Minute.ToString() + "-";
             if (m_currentTime.Second < 10)
-                m_XMLFilePath += "0" + m_currentTime.Second.ToString();
+                XMLFileName += "0" + m_currentTime.Second.ToString();
             else
-                m_XMLFilePath += m_currentTime.Second.ToString();
-            m_XMLFilePath += ".xml";
+                XMLFileName += m_currentTime.Second.ToString();
+            XMLFileName += ".xml";
+
+            XMLFilePath = string.Format("{0}{1}", XMLFolderPath, XMLFileName);
         }
 
+        public async void SendToServer(string ServerIP, int ServerPort)
+        {
+            SaveSemaphore.WaitOne();
+            TCPSender tcpsender = new TCPSender(ServerIP, ServerPort, XMLFilePath, XMLFileName, 10);
+            //tcpsender.FileSend();
+            //tcpsender.Dispose();
+        }
         //public void ConsoleTest()
         //{
         //    Console.WriteLine("start-------------------------------------------------------");
@@ -190,12 +210,10 @@ namespace SME.SMECollect
         //}
         #endregion
 
-        #region Constructor
-        // 생성자
-        public SMECollector() { }
-        
+        #region Constructor        
         public SMECollector(Exception exception, StackTrace stack, SMEProjectInformation smeproinfo)
         {
+            XMLFolderPath = string.Format("C:\\Dumps\\CS");
             m_projectinfo = smeproinfo;
             m_ErrorCallStack = stack;
             m_CollectThread = new Thread(new ParameterizedThreadStart(CollectErrorInformation));
@@ -205,7 +223,8 @@ namespace SME.SMECollect
 
             // collect Thread 안에서 semaphore를 초기화 할 경우 세마포어가 초기화 되기 전
             // Save Thread 안에서 초기화 되지 않은 세마포어를 가지고 wait를 진행하는 경우가 발생.
-            m_CollectSemaphore = new Semaphore(0, 1);
+            CollectSemaphore = new Semaphore(0, 1);
+            SaveSemaphore = new Semaphore(0, 1);
             m_CollectThread.Start(exception);
             m_SaveXMLThread.Start();
         }
@@ -221,17 +240,17 @@ namespace SME.SMECollect
             m_ErrorCallStack = null;
 
             m_smexmlwriter = null;
-            m_XMLFilePath = null;
+            XMLFilePath = null;
 
             if (m_CollectThread != null)
             {
                 m_CollectThread.Abort();
                 m_CollectThread = null;
             }
-            if(m_CollectSemaphore != null)
+            if(CollectSemaphore != null)
             {
-                m_CollectSemaphore.Close();
-                m_CollectSemaphore.Dispose();
+                CollectSemaphore.Close();
+                CollectSemaphore.Dispose();
             }
             
             if(m_SaveXMLThread != null)

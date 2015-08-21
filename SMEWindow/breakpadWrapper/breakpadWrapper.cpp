@@ -18,28 +18,31 @@ namespace google_breakpad
 		// 서버 전송
 		System::String^ filepath = gcnew System::String(dump_path);
 		System::String^ filename = gcnew System::String(minidump_id);
-
+		filename += ".dmp";
 		filepath += filename;
-
-		TCPSender^ sender = gcnew TCPSender(gcnew System::String("127.0.0.1"), filepath, filename);
-		sender->FileSend();
+		TCPSender^ sender = gcnew TCPSender(gcnew System::String("127.0.0.1"), 3000, filepath, filename, g_APIKey);
+		//sender->FileSend();
+		System::Windows::Forms::MessageBox::Show(L"Native Error occur");
 		return true;
 	}
 
-	breakpadWrapper::breakpadWrapper()
+	breakpadWrapper::breakpadWrapper(int apikey)
 	{
 		wchar_t* dumpfolder_path = L"C:\\Dumps\\";
 		int ret = GetFileAttributes(dumpfolder_path);
 		if (ret == -1)
 			CreateDirectory(dumpfolder_path, NULL);
 
+		g_APIKey = apikey;
+
 		handler = new ExceptionHandler(dumpfolder_path, NULL, ResultCallBack, NULL, ExceptionHandler::HANDLER_ALL);
 	}
-	breakpadWrapper::breakpadWrapper(wchar_t* ip, int port)
+	breakpadWrapper::breakpadWrapper(wchar_t* ip, int port, int apikey)
 	{
 		g_ServerIP = new wchar_t[wcslen(ip)];
 		wcscpy_s(g_ServerIP, wcslen(ip), ip);
 		g_ServerPort = port;
+		g_APIKey = apikey;
 
 		wchar_t* dumpfolder_path = L"C:\\Dumps\\";
 		int ret = GetFileAttributes(dumpfolder_path);

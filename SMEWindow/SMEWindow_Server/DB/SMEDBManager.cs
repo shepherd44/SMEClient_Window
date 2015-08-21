@@ -1,9 +1,15 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 using DumpReader.MinidumpStream;
 
-namespace DumpReader
+using SME.SMECollect;
+using SME.SMECollect.Data;
+using SME.SMEXML;
+using DumpReader;
+
+namespace SME.DB
 {
-    public class SMEDBManager
+    public class SMEDBManager : IDisposable
     {
         /// <summary>
         /// 사용법 : 우선 SMEServer에서 덤프파일들을 받고 덤프 파일 받은시간을 Dumps 테이블에 이름으로 저장한다.
@@ -13,15 +19,20 @@ namespace DumpReader
         /// 이 Dump_ID와 받은 덤프파일에서 분석한 SMEMiniDumpReader객체와 SMECollector 객체를 생성자 파라미터로
         /// 넣어준다.
         /// </summary>
+
+        #region Members
         MiniDumpExceptionStream m_exceptionstream;
         MiniDumpModule[] m_module;
         MiniDumpMiscInfo m_miscinfo;
         MiniDumpBreakpadInfo m_breakpad;
         MiniDumpAssertionInfo m_assertion;
         int m_dumpid;
+        SMEXMLReader m_smecollector;
+        #endregion
 
-        //생성자의 파라미터로 SMEMinidumpReader개체를 넣어준다. <::SMECollector는 재무가 추가::>.
-        public SMEDBManager(SMEMiniDumpReader minidumpReader, int dump_id)
+        #region Constructors
+        //생성자의 파라미터로 SMEMinidumpReader개체를 넣어준다.
+        public SMEDBManager(SMEMiniDumpReader minidumpReader, int dump_id, int apikey)
         {
             //SMEMinidumpReader 객체를 받아 저장되어있는 데이터들을 전역변수로 지정한다.
             m_exceptionstream = minidumpReader.ExceptionStream;
@@ -34,12 +45,15 @@ namespace DumpReader
             SaveNativeDumpData();
         }
 
-        //재무 니가원하던거다.
-        public static void SaveCssDumpData()
+        public SMEDBManager(string loadpath, int dump_id, int apikey)
         {
-            //채워넣어라
+            m_dumpid = dump_id;
+            m_smecollector = new SMEXMLReader(loadpath);
+            SaveCSDumpData();
         }
-        
+        #endregion
+
+        #region static Methods
         //클래스 안의 데이터들을 DB에 저장
         public void SaveNativeDumpData()
         {
@@ -49,7 +63,33 @@ namespace DumpReader
             InsertDatabase(MakeQueryforBreakpad());
             InsertDatabase(MakeQueryforAssertion());
         }
-        
+
+        public void SaveCSDumpData()
+        {
+            InsertDatabase(MakeQueryforCSProjectInfo());
+            InsertDatabase(MakeQueryforCSSystemInfo());
+            InsertDatabase(MakeQueryforCSExceptionInfo());
+            if (m_smecollector.ExceptionInfo.InnerException != null)
+            {
+                int exception_id = GetExcetpionID(m_dumpid);
+                InsertDatabase(MakeQueryforCSExceptionInfo(m_smecollector.ExceptionInfo.InnerException, exception_id));
+            }
+            InsertDatabase(MakeQueryforCSCallStackInfo());
+        }
+        #endregion
+
+        #region Query for DumpsID
+        private string MakeQueryforAddDumpsID()
+        {
+            string strCommand = "INSERT INTO Dumps(ProName, ProVersion, DumpsDump_ID) VALUES(";
+            strCommand += "'" + m_smecollector.ProjectInfo.Name + "',";
+            strCommand += "'" + m_smecollector.ProjectInfo.m_Version.ToString() + "',";
+            strCommand += "'" + m_dumpid + "')";
+            return strCommand;
+        }
+        #endregion
+
+        #region Query for Minidump
         //1. ExceptionStream 데이터를 DB에 저장하기 위한 Query생성함수
         public string MakeQueryforException()
         {
@@ -77,8 +117,8 @@ namespace DumpReader
         public string MakeQueryforModule()
         {
             int count = m_module.Length;
-            string strFilePathAndName = "";
-            string strFileVersion = "";
+            string strFilePathAndName = string.Empty;
+            string strFileVersion = string.Empty;
             string strCommand = "INSERT INTO NModule(PathAndFileName, FileVersion, DumpsDump_ID) VALUES('";
             for (int i = 0; i < m_module.Length; i++)
             {
@@ -170,7 +210,7 @@ namespace DumpReader
         {
             string strCommand = "INSERT INTO NAssertion(Line, Type, Expression, Function, File, DumpsDump_ID) VALUES(";
             if(m_assertion != null)
-            { 
+            {
                 strCommand += "'" + m_assertion.line + "',";
                 strCommand += "'" + m_assertion.type + "',";
                 strCommand += "'" + m_assertion.expression + "',";
@@ -180,11 +220,71 @@ namespace DumpReader
             }
             else
             {
-                strCommand = "INSERT INTO NAssertion(DumpsDump_ID) VALUES(1)";
+                strCommand = "INSERT INTO NAssertion(DumpsDump_ID) VALUES(";
+                strCommand += "'" + m_dumpid + "')";
             }
             return strCommand;
         }
+        #endregion
 
+        #region Query for CSDump
+        private string MakeQueryforCSProjectInfo()
+        {
+            string strCommand = "INSERT INTO ProjectInfo(ProName, ProVersion, DumpsDump_ID) VALUES(";
+            strCommand += "'" + m_smecollector.ProjectInfo.Name +"',";
+            strCommand += "'" + m_smecollector.ProjectInfo.m_Version.ToString() + "',";
+            strCommand += "'" + m_dumpid + "')";
+            return strCommand;
+        }
+
+        private string MakeQueryforCSSystemInfo()
+        {
+            string strCommand = "INSERT INTO SystemInfo(PlatformID, ServicePack, OSVersion, CLRVersion, Is64BitOS, Is64BitProcess, DumpsDump_ID) VALUES(";
+            strCommand += "'" + m_smecollector.SystemInfo.PlatformID.ToString() + "',";
+            strCommand += "'" + m_smecollector.SystemInfo.ServicePack.ToString() + "',";
+            strCommand += "'" + m_smecollector.SystemInfo.OSVersion.ToString() + "',";
+            strCommand += "'" + m_smecollector.SystemInfo.CLRVersion.ToString() + "',";
+            strCommand += "'" + m_smecollector.SystemInfo.Is64bitOS.ToString() + "',";
+            strCommand += "'" + m_smecollector.SystemInfo.Is64bitProcess.ToString() + "',";
+            strCommand += "'" + m_dumpid + "')";
+            return strCommand;
+        }
+
+        private string MakeQueryforCSExceptionInfo()
+        {
+            string strCommand = "INSERT INTO ExceptionInfo(EName, HResult, HelpLink, Data, CallStack, DumpsDump_ID) VALUES(";
+            strCommand += "'" + m_smecollector.ExceptionInfo.Name + "',";
+            strCommand += "'" + m_smecollector.ExceptionInfo.Hresult + "',";
+            strCommand += "'" + m_smecollector.ExceptionInfo.HelpLink + "',";
+            strCommand += "'" + m_smecollector.ExceptionInfo.DataToString() + "',";
+            strCommand += "'" + m_smecollector.ExceptionInfo.CallStackString + "',";
+            strCommand += "'" + m_dumpid + "')";
+            return strCommand;
+        }
+
+        private string MakeQueryforCSExceptionInfo(SMEExceptionInformation exinfo, int exceptionid)
+        {
+            string strCommand = "INSERT INTO ExceptionInfo(EName, HResult, HelpLink, Data, CallStack, InnerExp, DumpsDump_ID) VALUES(";
+            strCommand += "'" + exinfo.Name + "',";
+            strCommand += "'" + exinfo.Hresult + "',";
+            strCommand += "'" + exinfo.HelpLink + "',";
+            strCommand += "'" + exinfo.DataToString() + "',";
+            strCommand += "'" + exinfo.CallStackString + "',";
+            strCommand += "'" + exceptionid + "',";
+            strCommand += "'" + m_dumpid + "')";
+            return strCommand;
+        }
+
+        private string MakeQueryforCSCallStackInfo()
+        {
+            string strCommand = "INSERT INTO CallStackInfo(Stack, DumpsDump_ID) VALUES(";
+            strCommand += "'" + m_smecollector.CallStackInfo.ToString() + "',";
+            strCommand += "'" + m_dumpid + "')";
+            return strCommand;
+        }
+        #endregion
+
+        #region Method
         public static int GetDumpID()
         {
             //SMEServer에서 덤프를 받아 DB에 저장할 때 데이터베이스로부터 Dump_ID를 받아오는 함수
@@ -195,10 +295,11 @@ namespace DumpReader
             SqlCommand cmd = new SqlCommand(strCmd, conn);
             conn.Open();
             SqlDataReader reader = cmd.ExecuteReader();
-            reader.Read(); //SqlDataReader를 다음 레코드로 이동한다.
-            int retVal = int.Parse(reader[""].ToString());
+            int retLastVal = -1;
+            while(reader.Read()) //SqlDataReader를 다음 레코드로 이동한다.
+                retLastVal = int.Parse(reader[""].ToString());//마지막 데이터가 방금 입력한 Dump의 Dump_ID가 된다.
             conn.Close();
-            return retVal;
+            return retLastVal;
 
         }
 
@@ -212,5 +313,31 @@ namespace DumpReader
             cmd.ExecuteNonQuery();
             conn.Close();
         }
+
+        public int GetExcetpionID(int dumpid)
+        {
+            string strConn = "Data Source=192.168.1.71;Initial Catalog=SME;User ID=SME;Password=bit1234";
+            SqlConnection conn = new SqlConnection(strConn);
+            string strCmd = "SELECT Exp_ID FROM ExceptionInfo WHERE DumpsDump_ID = '" + dumpid + "'";
+            SqlCommand cmd = new SqlCommand(strCmd, conn);
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            int retVal = 0;
+            while(reader.Read())
+            {
+                retVal = int.Parse(reader[0].ToString());
+            }
+            
+            conn.Close();
+            return retVal;
+        }
+        #endregion
+
+        #region Disposable Interface
+        void IDisposable.Dispose()
+        {
+            
+        }
+        #endregion
     }
 }

@@ -21,9 +21,9 @@ namespace SME.Server
         #endregion
 
         #region Methods
-        public static void Start()
+        public static void Start(string ip, int port)
         {
-            listener = new SMEListener("127.0.0.1", 3000);
+            listener = new SMEListener(ip, port);
         }
 
         public static void Close()

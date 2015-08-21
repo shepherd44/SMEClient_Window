@@ -54,7 +54,6 @@
     <Compile Include="Native\NativeMethods.cs" />
     <Compile Include="Native\timezoneapi.cs" />
     <Compile Include="Native\windows.cs" />
-    <Compile Include="SMEDBManager.cs" />
     <Compile Include="SMEMinidumpReader.cs" />
   </ItemGroup>
   <ItemGroup>

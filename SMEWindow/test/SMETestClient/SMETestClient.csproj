@@ -78,6 +78,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\error_gen\managedCal\managedCal.vcxproj">
+      <Project>{1fd816e4-78b0-4f14-8b44-cc19b288da13}</Project>
+      <Name>managedCal</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\NetLib\NetLib.csproj">
       <Project>{ef13c77a-1405-45bc-ba8b-7122cb81fa25}</Project>
       <Name>NetLib</Name>

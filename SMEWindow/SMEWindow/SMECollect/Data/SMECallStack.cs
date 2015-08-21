@@ -26,19 +26,24 @@ namespace SME.SMECollect.Data
         {
             MethodBase method = stackframe.GetMethod();
             Type type = method.DeclaringType;
-            m_method = type.ToString();
-            m_method += "." + method.Name + "(";
-            ParameterInfo[] parameters = method.GetParameters();
-            for (int i = 0; i < parameters.Length; i++)
+            if (type != null)
             {
-                m_method += parameters[i].ParameterType.Name + " ";
-                m_method += parameters[i].Name;
-                if (i < parameters.Length - 1)
-                    m_method += ",";
+                m_method = type.ToString();
+                m_method += "." + method.Name + "(";
+                ParameterInfo[] parameters = method.GetParameters();
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    m_method += parameters[i].ParameterType.Name + " ";
+                    m_method += parameters[i].Name;
+                    if (i < parameters.Length - 1)
+                        m_method += ",";
+                }
+                m_method += ")";
+                m_file = stackframe.GetFileName();
+                m_line = stackframe.GetFileLineNumber();
             }
-            m_method += ")";
-            m_file = stackframe.GetFileName();
-            m_line = stackframe.GetFileLineNumber();
+            else
+                m_method = string.Empty;
         }
         public SMECallStack(XElement xelement)
         {

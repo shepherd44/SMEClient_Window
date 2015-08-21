@@ -7,13 +7,14 @@ namespace google_breakpad {
 
 	wchar_t* g_ServerIP = NULL;
 	int g_ServerPort = NULL;
+	int g_APIKey = -1;
 
 	public ref class breakpadWrapper
 	{
 		ExceptionHandler* handler;
 	public:	
-		breakpadWrapper();
-		breakpadWrapper(wchar_t* ip, int port);
+		breakpadWrapper(int apikey);
+		breakpadWrapper(wchar_t* ip, int port, int apikey);
 		~breakpadWrapper();
 		static bool WriteMinidump();
 	};

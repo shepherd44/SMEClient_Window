@@ -8,6 +8,8 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Windows.Forms;
 
+using NetLib;
+
 [assembly: RuntimeCompatibility(WrapNonExceptionThrows = true)]
 
 namespace SME.Client
@@ -16,11 +18,16 @@ namespace SME.Client
     {
     #region members
         public static SMEProjectInformation ProjectInfo { get; set; }
-        // cpp 감시를 시작할 지 결정
-        // 감시를 시작할 경우 true 설정
-        public bool UseCPP { get; set; }
+        // Naive Exception
+        public static bool IsCatchNE { get; protected internal set; }
+        // Handled Exception
+        public static bool IsCatchHE { get; protected internal set; }
+        // 서버로 전송할 것인지 선택
+        public static bool IsSend { get; protected internal set; }
+        public static string ServerIP { get; protected internal set; }
+        public static int ServerPort { get; protected internal set; }
         // Server에서 프로젝트를 구별해 줄 APIKey
-        public static String APIKEY { get; set; }
+        public static String APIKEY { get; protected internal set; }
         // breakpad initializing wrapper
         private static breakpadWrapper m_Wrapper = null;
     #endregion
@@ -29,62 +36,110 @@ namespace SME.Client
         // SMEClient 생성자
         // @currentapplication: Form을 사용할 경우 대입 아닐 경우 null
         // @currentDomain: 호출해 준 프로세스의 기본 앱도메인
-        public SMEClient(string proname, Version proversion, bool usecpp, String APIKey)
+        public SMEClient(string proname,
+            Version proversion,
+            bool iscatchne,
+            bool iscatchhe,
+            String APIKey)
         {
-            
+            // Project에 대응하는 api key(project id)
+            APIKEY = APIKey;
+            IsCatchNE = iscatchne;
+            IsCatchHE = iscatchhe;
+            IsSend = false;
+            ServerIP = string.Empty;
+            ServerPort = -1;
+            ProjectInfo = new SMEProjectInformation(proname, proversion);
+            Initialize();
+        }
+
+        public SMEClient(string proname,
+            Version proversion,
+            bool iscatchne,
+            bool iscatchhe,
+            String APIKey,
+            string serverip,
+            int serverport)
+        {
+            // Project에 대응하는 api key(project id)
+            APIKEY = APIKey;
+            IsCatchNE = iscatchne;
+            IsCatchHE = iscatchhe;
+            IsSend = true;
+            ServerIP = serverip;
+            ServerPort = serverport;
+            ProjectInfo = new SMEProjectInformation(proname, proversion);
+            Initialize();
+        }
+	#endregion
+
+    #region Methods
+        private void Initialize()
+        {
             // 우선 순위 조정, 최고 우선순위로
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
-            
-            // Application 영역 핸들러 설정
             // Application 영역 Unhandled Exception Mode 선택
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            // Application 영역 UI Thread Unhandled Exception Handler 설정
-            Application.ThreadException += new ThreadExceptionEventHandler(SMEThreaqdExceptionHandler);
-
-            // AppDomain 영역 핸들러 설정
+            
             AppDomain CurrentDomain = AppDomain.CurrentDomain;
-            // First Chance Exception Handler 설정
-            CurrentDomain.FirstChanceException += SMEFirstChanceExceptionHandler;
-            // Non-UI Thread Unhandled Exception Handler 설정
+            // Non-UI Thread Unhandled Exception Handler 설정(기본 핸들러)
             CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(SMEUnHandledExceptionHandler);
             
-            // google_breakpad 설정
-            UseCPP = usecpp;
-            if (UseCPP)
-                m_Wrapper = new breakpadWrapper();
-
-            ProjectInfo = new SMEProjectInformation(proname, proversion);
-            // Server에 전송할 APIKey
-            APIKEY = APIKey;
-        }		 
-	#endregion
+            // Application 영역 UI Thread Unhandled Exception Handler 설정
+            Application.ThreadException += new ThreadExceptionEventHandler(SMEThreadExceptionHandler);
+            if (IsCatchHE)
+                CurrentDomain.FirstChanceException += SMEFirstChanceExceptionHandler;
+            if (IsCatchNE)
+                m_Wrapper = new breakpadWrapper(int.Parse(APIKEY));
+        }
+        public static void CollectError(string sme)
+        {
+            StackTrace stacktrace = new StackTrace(true);
+            SMECollector smecollector = new SMECollector(new Exception(""), stacktrace, ProjectInfo);
+        }
+    #endregion
 
     #region Exception Handlers
         // Unhandled Exception 처리 함수
         private static void SMEUnHandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
             Exception exception = (Exception)e.ExceptionObject;
-            //예외처리 조합 SMECollector
             StackTrace stacktrace = new StackTrace(true);
             SMECollector smecollector = new SMECollector(exception, stacktrace, ProjectInfo);
             
             //파일 전송
-
+            if (IsSend)
+            {
+                smecollector.SendToServer(ServerIP, ServerPort);
+            }
+            
         }
 
         // Unhandled, Handled 두 경우 모두 반응하게 된다. 
         private static void SMEFirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs f)
         {
             Exception exception = (Exception)f.Exception;
-            Console.WriteLine("FirstChanceException event raised in {0}: {1}",
-            AppDomain.CurrentDomain.FriendlyName, f.Exception.Message);
+            StackTrace stacktrace = new StackTrace(true);
+            SMECollector smecollector = new SMECollector(exception, stacktrace, ProjectInfo);
+
+            //파일 전송
+            if (IsSend)
+            {
+                smecollector.SendToServer(ServerIP, ServerPort);
+            }
         }
 
-        private static void SMEThreaqdExceptionHandler(object sender, ThreadExceptionEventArgs t)
+        private static void SMEThreadExceptionHandler(object sender, ThreadExceptionEventArgs t)
         {
             Exception exception = t.Exception;
             StackTrace stacktrace = new StackTrace(true);
             SMECollector smecollector = new SMECollector(exception, stacktrace, ProjectInfo);
+
+            //파일 전송
+            if(IsSend)
+            {
+                smecollector.SendToServer(ServerIP, ServerPort);
+            }
         }
     #endregion
     }

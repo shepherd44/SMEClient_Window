@@ -58,19 +58,49 @@ namespace SMETestClient
         private void onlyCSToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SMEClient smeclient;
-            smeclient = new SMEClient("SMEClientForm", new Version("0.0"), false, "Test Key");
+            //smeclient = new SMEClient("SMEClientForm", new Version("0.0"), false, "Test Key");
         }
 
         private void withCPPToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SMEClient smeclient;
-            smeclient = new SMEClient("SMEClientForm", new Version("0.0"), false, "Test Key");
+            //smeclient = new SMEClient("SMEClientForm", new Version("0.0"), false, "Test Key");
         }
 
         private void fileSendToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TCPSender sendertemp = new TCPSender("127.0.0.1", "C:\\Dumps\\CS\\SMETestClient-0.0-2015-08-12-20-16-08.xml", "SMETestClient-0.0-2015-08-12-20-16-08.xml");
+            TCPSender sendertemp = new TCPSender("127.0.0.1", 3000, "C:\\Dumps\\CS\\SMETestClient-0.0-2015-08-18-16-48-37.xml", "SMETestClient-0.0-2015-08-18-16-48-37.xml", 10);
+            sendertemp.FileSend();
+        }
+
+        private void nativeErrorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                managedCal.AddCalWrap add = new managedCal.AddCalWrap();
+                add.Add(2, 1);
+            }
+            catch(Win32Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+            catch
+            {
+                MessageBox.Show("Error");
+            }
             
+        }
+
+        private void handledExceptionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                throw new Exception("My Excetpion");
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
         }
     }
 }

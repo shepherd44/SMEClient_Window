@@ -8,12 +8,12 @@ namespace SME.SMECollect.Data
     public class SMESystemInformation
     {
         #region Members
-        PlatformID m_platformID;
-        string m_servicePack;
-        Version m_OSVersion;
-        Version m_CLRVersion;
-        bool m_Is64bitOS;
-        bool m_Is64bitProcess;
+        public PlatformID PlatformID { get; protected internal set; }
+        public string ServicePack { get; protected internal set; }
+        public Version OSVersion { get; protected internal set; }
+        public Version CLRVersion { get; protected internal set; }
+        public bool Is64bitOS { get; protected internal set; }
+        public bool Is64bitProcess { get; protected internal set; }
         #endregion
 
         #region Constructor
@@ -21,12 +21,12 @@ namespace SME.SMECollect.Data
         {
             OperatingSystem os = Environment.OSVersion;
 
-            m_platformID = os.Platform;
-            m_OSVersion = os.Version;
-            m_CLRVersion = Environment.Version;
-            m_servicePack = os.ServicePack;
-            m_Is64bitOS = Environment.Is64BitOperatingSystem;
-            m_Is64bitProcess = Environment.Is64BitProcess;
+            PlatformID = os.Platform;
+            OSVersion = os.Version;
+            CLRVersion = Environment.Version;
+            ServicePack = os.ServicePack;
+            Is64bitOS = Environment.Is64BitOperatingSystem;
+            Is64bitProcess = Environment.Is64BitProcess;
         }
 
         public SMESystemInformation(XElement xelement)
@@ -39,12 +39,12 @@ namespace SME.SMECollect.Data
         public XElement ToXElement() 
         {
             XElement xmldoc = new XElement("SystemInformation",
-                                new XElement("PlatformID", m_platformID.ToString()),
-                                new XElement("ServicePack", m_servicePack),
-                                new XElement("OSVersion", m_OSVersion.ToString()),
-                                new XElement("CLRVersion", m_CLRVersion.ToString()),
-                                new XElement("Is64BitOS", m_Is64bitOS.ToString()),
-                                new XElement("Is64BitProcess", m_Is64bitProcess.ToString()));
+                                new XElement("PlatformID", PlatformID.ToString()),
+                                new XElement("ServicePack", ServicePack),
+                                new XElement("OSVersion", OSVersion.ToString()),
+                                new XElement("CLRVersion", CLRVersion.ToString()),
+                                new XElement("Is64BitOS", Is64bitOS.ToString()),
+                                new XElement("Is64BitProcess", Is64bitProcess.ToString()));
             return xmldoc;
         }
 
@@ -54,28 +54,28 @@ namespace SME.SMECollect.Data
             {
                 XElement xe = (XElement)xelement.FirstNode;
                 if (PlatformID.Win32NT.ToString().Equals(xe.Value))
-                    m_platformID = PlatformID.Win32NT;
+                    PlatformID = PlatformID.Win32NT;
                 else if(PlatformID.Win32S.ToString().Equals(xe.Value))
-                    m_platformID = PlatformID.Win32S;
+                    PlatformID = PlatformID.Win32S;
                 else if (PlatformID.Win32Windows.ToString().Equals(xe.Value))
-                    m_platformID = PlatformID.Win32Windows;
+                    PlatformID = PlatformID.Win32Windows;
                 else if (PlatformID.WinCE.ToString().Equals(xe.Value))
-                    m_platformID = PlatformID.WinCE;
+                    PlatformID = PlatformID.WinCE;
                 else if (PlatformID.Xbox.ToString().Equals(xe.Value))
-                    m_platformID = PlatformID.Xbox;
+                    PlatformID = PlatformID.Xbox;
                 else
-                    m_platformID = 0;
+                    PlatformID = 0;
                 
                 xe = (XElement)xe.NextNode;
-                m_servicePack = xe.Value;
+                ServicePack = xe.Value;
                 xe = (XElement)xe.NextNode;
-                m_OSVersion = new Version(xe.Value);
+                OSVersion = new Version(xe.Value);
                 xe = (XElement)xe.NextNode;
-                m_CLRVersion = new Version(xe.Value);
+                CLRVersion = new Version(xe.Value);
                 xe = (XElement)xe.NextNode;
-                m_Is64bitOS = bool.Parse(xe.Value);
+                Is64bitOS = bool.Parse(xe.Value);
                 xe = (XElement)xe.NextNode;
-                m_Is64bitProcess = bool.Parse(xe.Value);
+                Is64bitProcess = bool.Parse(xe.Value);
             }
             else
                 throw new Exception("This XElement is not SystemInformation XElement.");
@@ -85,12 +85,12 @@ namespace SME.SMECollect.Data
         override public string ToString()
         {
             string temp = "System Information";
-            temp += ":PlatformID:" + m_platformID.ToString();
-            temp += ":ServicePack:" + m_servicePack;
-            temp += ":OSVersion:" + m_OSVersion.ToString();
-            temp += ":CLRVersion:" + m_CLRVersion.ToString();
-            temp += ":Is64bitOS:" + m_Is64bitOS.ToString();
-            temp += ":Is64bitProcess:" + m_Is64bitProcess.ToString();
+            temp += ":PlatformID:" + PlatformID.ToString();
+            temp += ":ServicePack:" + ServicePack;
+            temp += ":OSVersion:" + OSVersion.ToString();
+            temp += ":CLRVersion:" + CLRVersion.ToString();
+            temp += ":Is64bitOS:" + Is64bitOS.ToString();
+            temp += ":Is64bitProcess:" + Is64bitProcess.ToString();
             return temp;
         }
         #endregion

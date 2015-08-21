@@ -6,6 +6,10 @@ using System.IO;
 using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
+using SME.DB;
+using SME.SMEXML;
+using DumpReader;
+using System.Data;
 
 namespace SME.SMENet
 {
@@ -114,7 +118,7 @@ namespace SME.SMENet
         {
             tcpClient = client;
             netStream = client.GetStream();
-            netStream.ReadTimeout = 1000;
+            //netStream.ReadTimeout = 10000;
         }
         #endregion
 
@@ -138,6 +142,22 @@ namespace SME.SMENet
                 buffer = new byte[fileNameLength];
                 netStream.Read(buffer, 0, fileNameLength);
                 fileName = System.Text.Encoding.UTF8.GetString(buffer);
+                // 0 : xml
+                // 1 : dmp
+                int filesel = 0;
+                if (fileName.Contains(".dmp"))
+                    filesel = 1;
+                else if (fileName.Contains(".xml"))
+                    filesel = 0;
+                else if (fileName.Contains(".XML"))
+                    filesel = 0;
+                else
+                    throw new Exception("파일 확장자가 다릅니다.");
+
+                // APIkey
+                buffer = new byte[4];
+                netStream.Read(buffer, 0, buffer.Length);
+                int apikey = BitConverter.ToInt32(buffer, 0);
 
                 // 파일 내용
                 buffer = new byte[1024];
@@ -150,18 +170,34 @@ namespace SME.SMENet
                     fileStream.Write(buffer, 0, receiveLength);
                     totalLength += receiveLength;
                 }
+                fileStream.Close();
+
+                DumpsDBM dumpsdbm = new DumpsDBM("Data Source=192.168.1.71;Initial Catalog=SME;User ID=SME;Password=bit1234");
+                
+                dumpsdbm.Insert(fileName, apikey);
+
+                DataSet dumpid = dumpsdbm.SelectExp_ID(fileName);
+                int did = (int)dumpid.Tables[0].Rows[0].ItemArray[0];
+                SMEDBManager dbmanager;
+                if(filesel == 0)
+                    dbmanager = new SMEDBManager(fileName, did, apikey);
+                else if(filesel == 1)
+                    dbmanager = new SMEDBManager(new SMEMiniDumpReader(fileName), did, apikey);
+                
             }
             catch(Exception e)
             {
-
+                
             }
             finally
             {
+                
                 this.Dispose();
             }
         }
         #endregion
 
+        #region Disposable Interface
         public void Dispose()
         {
             if(tcpClient != null)
@@ -174,7 +210,8 @@ namespace SME.SMENet
                 fileStream.Close();
                 fileStream = null;
             }
-            
+
         }
+        #endregion
     }
 }

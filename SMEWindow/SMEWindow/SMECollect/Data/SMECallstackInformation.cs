@@ -13,7 +13,6 @@ namespace SME.SMECollect.Data
     {
         #region Members
         List<SMECallStack> m_listCallstack = new List<SMECallStack>();
-        private void AddCallStack(SMECallStack smecallstack) { m_listCallstack.Add(smecallstack); }
         #endregion
 
         #region Constructors
@@ -55,6 +54,8 @@ namespace SME.SMECollect.Data
         #endregion
 
         #region Functions
+        private void AddCallStack(SMECallStack smecallstack) { m_listCallstack.Add(smecallstack); }
+
         public XElement ToXElement()
         {
             XElement xmldoc = new XElement("CallStackInformation");
@@ -82,7 +83,7 @@ namespace SME.SMECollect.Data
 
         override public string ToString()
         {
-            string temp = "CallStackInformation\n";
+            string temp = "";
             foreach (SMECallStack item in m_listCallstack)
             {
                 temp += item.ToString();

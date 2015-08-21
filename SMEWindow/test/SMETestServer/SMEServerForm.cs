@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using SME.Server;
+using DumpReader;
 
 namespace SMETestServer
 {
@@ -17,7 +18,8 @@ namespace SMETestServer
         public SMEServerForm()
         {
             InitializeComponent();
-            SMEServer.Start();
+            SMEServer.Start("127.0.0.1", 3000);
+            richTB_Main.Text += "Server Start";
         }
 
         private void SMEServerForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -25,6 +27,10 @@ namespace SMETestServer
             SMEServer.Close();
         }
 
+        public void AddText(string text)
+        {
+            richTB_Main.Text = string.Format("{0}\n{1}", richTB_Main.Text, text);
+        }
         
     }
 }
