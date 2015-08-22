@@ -13,7 +13,7 @@ using System.Data;
 
 namespace SME.SMENet
 {
-    //public delegate void AfterReceive();
+    public delegate void AfterReceive(string ip, string filename, string time);
 
     public class SMEListener : IDisposable
     {
@@ -29,6 +29,7 @@ namespace SME.SMENet
 
         //public static AfterReceive afterReceive;
         //private Object thislock = new Object();
+        public AfterReceive Write;
         #endregion
 
         #region Constructors

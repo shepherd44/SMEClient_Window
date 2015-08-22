@@ -27,9 +27,14 @@ namespace SMETestServer
             SMEServer.Close();
         }
 
-        public void AddText(string text)
+        public static void AddText(string text)
         {
             richTB_Main.Text = string.Format("{0}\n{1}", richTB_Main.Text, text);
+        }
+
+        public static void AddText(string ip, string filename, string time)
+        {
+            richTB_Main.Text = string.Format("{0}\n[{1}:{2}]{3}", richTB_Main.Text, time, ip, filename);
         }
         
     }
