@@ -24,9 +24,6 @@
     <ClInclude Include="resource.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="..\windows\handler\exception_handler.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="SMEException.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>

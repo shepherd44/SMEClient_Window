@@ -29,7 +29,7 @@ namespace SME.Client
         // Server에서 프로젝트를 구별해 줄 APIKey
         public static String APIKEY { get; protected internal set; }
         // breakpad initializing wrapper
-        private static breakpadWrapper m_Wrapper = null;
+        private static breakpadWrapper m_Wrapper;
     #endregion
         
     #region 생성자

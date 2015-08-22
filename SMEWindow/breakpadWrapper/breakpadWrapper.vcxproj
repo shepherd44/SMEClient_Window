@@ -77,7 +77,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\windows\handler\exception_handler.h" />
     <ClInclude Include="breakpadWrapper.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SMEException.h" />

@@ -1,7 +1,9 @@
 // breakpadWrapper.h
 
 #pragma once
-#include "client\windows\handler\exception_handler.h"
+//#include "client\windows\handler\exception_handler.h"
+#include "../../google-breakpad/src/client/windows/handler/exception_handler.h"
+
 
 namespace google_breakpad {
 
