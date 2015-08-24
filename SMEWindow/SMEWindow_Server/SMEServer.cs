@@ -11,6 +11,7 @@ namespace SME.Server
         #region Members
         //static ThreadPool m_ThreadPool;
         static SMEListener listener;
+        public static AfterReceive AfterR;
         #endregion
 
         #region Constructors

@@ -157,7 +157,14 @@ namespace SME.SMECollect
                                               m_exceptioninfo,
                                               m_callstackinfo);
             DateToFileName();
-            m_smexmlwriter.SaveToXML(XMLFilePath);
+            try
+            {
+                m_smexmlwriter.SaveToXML(XMLFilePath);
+            }
+            catch(Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.Message);
+            }
             CollectSemaphore.Release(1);
             SaveSemaphore.Release(1);
 

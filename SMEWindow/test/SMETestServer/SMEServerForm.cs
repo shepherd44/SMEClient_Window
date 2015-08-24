@@ -20,6 +20,7 @@ namespace SMETestServer
             InitializeComponent();
             SMEServer.Start("127.0.0.1", 3000);
             richTB_Main.Text += "Server Start";
+            SMEServer.AfterR += AddText;
         }
 
         private void SMEServerForm_FormClosing(object sender, FormClosingEventArgs e)

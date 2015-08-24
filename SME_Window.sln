@@ -55,6 +55,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "breakpad_test", "breakpad_t
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StackWalk", "StackWalk", "{68CEB6AA-3B99-4ADD-AFD2-23A3C82C5329}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCTest", "SMEWindow\test\MFCTest\MFCTest.vcxproj", "{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -395,6 +397,24 @@ Global
 		{F049C569-88D3-46F3-9B63-1698FB0F0843}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F049C569-88D3-46F3-9B63-1698FB0F0843}.Release|Win32.ActiveCfg = Release|Any CPU
 		{F049C569-88D3-46F3-9B63-1698FB0F0843}.Release|x64.ActiveCfg = Release|Any CPU
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Debug|Win32.Build.0 = Debug|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Debug|x64.ActiveCfg = Debug|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Purify|Any CPU.ActiveCfg = Release|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Purify|Mixed Platforms.ActiveCfg = Release|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Purify|Mixed Platforms.Build.0 = Release|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Purify|Win32.ActiveCfg = Release|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Purify|Win32.Build.0 = Release|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Purify|x64.ActiveCfg = Release|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Release|Any CPU.ActiveCfg = Release|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Release|Win32.ActiveCfg = Release|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Release|Win32.Build.0 = Release|Win32
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -423,5 +443,6 @@ Global
 		{F049C569-88D3-46F3-9B63-1698FB0F0843} = {0C77249C-11AA-4B20-B24E-9B1BB4F6E4C6}
 		{94A61791-995A-4D5D-AC4A-4AA6AC8BC02A} = {8FEAABAE-FA34-4ECB-A5EC-C93555F6F1D0}
 		{68CEB6AA-3B99-4ADD-AFD2-23A3C82C5329} = {206AEE5D-EA55-424D-BFDE-F54BE59F2E15}
+		{A97DB567-5394-4CCC-A990-1EA2ACAE6B1F} = {8FEAABAE-FA34-4ECB-A5EC-C93555F6F1D0}
 	EndGlobalSection
 EndGlobal

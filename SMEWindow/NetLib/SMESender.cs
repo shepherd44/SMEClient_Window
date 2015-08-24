@@ -48,7 +48,7 @@ namespace NetLib
             }
             catch(Exception e)
             {
-                
+                System.Windows.Forms.MessageBox.Show(e.Message);
             }
         }
         //소멸자

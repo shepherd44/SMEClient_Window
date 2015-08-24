@@ -57,13 +57,13 @@ namespace SMETestClient
 
         private void onlyCSToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SMEClient smeclient;
+            //SMEClient smeclient;
             //smeclient = new SMEClient("SMEClientForm", new Version("0.0"), false, "Test Key");
         }
 
         private void withCPPToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SMEClient smeclient;
+            //SMEClient smeclient;
             //smeclient = new SMEClient("SMEClientForm", new Version("0.0"), false, "Test Key");
         }
 

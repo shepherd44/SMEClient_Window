@@ -83,7 +83,8 @@ namespace SME.Client
             
             AppDomain CurrentDomain = AppDomain.CurrentDomain;
             // Non-UI Thread Unhandled Exception Handler 설정(기본 핸들러)
-            CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(SMEUnHandledExceptionHandler);
+            if (!IsCatchHE)
+                CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(SMEUnHandledExceptionHandler);
             
             // Application 영역 UI Thread Unhandled Exception Handler 설정
             Application.ThreadException += new ThreadExceptionEventHandler(SMEThreadExceptionHandler);
@@ -104,6 +105,8 @@ namespace SME.Client
         private static void SMEUnHandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
             Exception exception = (Exception)e.ExceptionObject;
+            if (exception == null)
+                exception = new Exception("null");
             StackTrace stacktrace = new StackTrace(true);
             SMECollector smecollector = new SMECollector(exception, stacktrace, ProjectInfo);
             
@@ -119,26 +122,48 @@ namespace SME.Client
         private static void SMEFirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs f)
         {
             Exception exception = (Exception)f.Exception;
+            if (exception == null)
+                exception = new Exception("null");
             StackTrace stacktrace = new StackTrace(true);
-            SMECollector smecollector = new SMECollector(exception, stacktrace, ProjectInfo);
+            SMECollector smecollector = null;
+            try
+            {
+                smecollector = new SMECollector(exception, stacktrace, ProjectInfo);
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.Message);
+            }
 
             //파일 전송
             if (IsSend)
             {
-                smecollector.SendToServer(ServerIP, ServerPort);
+                if (smecollector != null)
+                    smecollector.SendToServer(ServerIP, ServerPort);
             }
         }
 
         private static void SMEThreadExceptionHandler(object sender, ThreadExceptionEventArgs t)
         {
             Exception exception = t.Exception;
+            if (exception == null)
+                exception = new Exception("null");
             StackTrace stacktrace = new StackTrace(true);
-            SMECollector smecollector = new SMECollector(exception, stacktrace, ProjectInfo);
+            SMECollector smecollector = null;
+            try
+            {
+                smecollector = new SMECollector(exception, stacktrace, ProjectInfo);
+            }
+            catch(Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.Message);
+            }
 
             //파일 전송
             if(IsSend)
             {
-                smecollector.SendToServer(ServerIP, ServerPort);
+                if(smecollector != null)
+                    smecollector.SendToServer(ServerIP, ServerPort);
             }
         }
     #endregion

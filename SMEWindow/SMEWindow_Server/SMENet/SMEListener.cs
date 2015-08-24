@@ -170,6 +170,8 @@ namespace SME.SMENet
                     receiveLength = netStream.Read(buffer, 0, buffer.Length);
                     fileStream.Write(buffer, 0, receiveLength);
                     totalLength += receiveLength;
+                    if(receiveLength == 0)
+                        break;
                 }
                 fileStream.Close();
 
