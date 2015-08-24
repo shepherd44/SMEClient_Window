@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "TCPSender.h"
+#include "MFCTest.h"
 
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
@@ -83,16 +84,60 @@ int TCPSender::Send(char* pmessage, int length)
 	return 0;
 }
 
-int TCPSender::Send(FILE* pfile)
+int TCPSender::Send(std::ifstream* inFile, char* pfilename, int apikey)
 {
-	/*char filesize[8];
-	char filenamelength[4];
-	char *filename;
-	char buffer[BUF_LENGTH];*/
+	// file open
+	std::ifstream::pos_type size;
 
-	
+	char* oData;
+
+	size = inFile->tellg();
+	inFile->seekg(0, std::ios::beg);
+
+	oData = new char[1024];
+	inFile->read(oData, 1024);
+
+	theApp.DoMessageBox(reinterpret_cast<wchar_t*> (oData), NULL, MB_OK);
+
+
+
+	// get file size
+	unsigned long fsize = 0;
+	byte filesize[8];
+	IntToByte(size, filesize);
+	// send file size 
+	int ret = send(m_ServerSocket, reinterpret_cast<char*>(filesize), 8, 0);
+
+	// send file name
+	int fnlength = strlen(pfilename);
+	byte filenamelength[4];
+	memset(filenamelength, 0, 4);
+	IntToByte(fnlength, filenamelength);
+	ret = send(m_ServerSocket, reinterpret_cast<char*>(filenamelength), 4, 0);
+	ret = send(m_ServerSocket, pfilename, fnlength, 0);
+
+	//apikey
+	memset(filenamelength, 0, 4);
+	IntToByte(apikey, filenamelength);
+	ret = send(m_ServerSocket, reinterpret_cast<char*>(filenamelength), 4, 0);
+
+	char buffer[BUF_LENGTH];
+	memset(buffer, 0, BUF_LENGTH);
+
+	int fblocksize = 0;
+	//std::ifstream ifile(pfilepath);
+	int i = 0;
+	while (1)
+	{
+		/* fblocksize = fread(buffer, sizeof(char), BUF_LENGTH, fp); */
+
+		ret = send(m_ServerSocket, reinterpret_cast<char*>(oData + i), 1024, 0);
+
+		i += 1024;
+	}
 	return 0;
 }
+CMFCTestApp theApp;
 
 int TCPSender::Send(char* pfilepath, char* pfilename, int apikey)
 {
@@ -104,12 +149,10 @@ int TCPSender::Send(char* pfilepath, char* pfilename, int apikey)
 	char* oData;
 
 	size = inFile.tellg();
-	std::cout << "Size of file: " << size;
 	inFile.seekg(0, std::ios::beg);
+	oData = new char[1024];
+	inFile.read(oData, 1024);
 
-	oData = new char[size];
-	inFile.read(oData, size);
-	
 	// get file size
 	unsigned long fsize = 0;
 	byte filesize[8];
@@ -141,7 +184,6 @@ int TCPSender::Send(char* pfilepath, char* pfilename, int apikey)
 		/* fblocksize = fread(buffer, sizeof(char), BUF_LENGTH, fp); */
 
 		ret = send(m_ServerSocket, reinterpret_cast<char*>(oData + i), 1024, 0);
-		
 		i += 1024;
 	}
 	inFile.close();

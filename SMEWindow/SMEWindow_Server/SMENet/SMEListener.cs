@@ -59,6 +59,7 @@ namespace SME.SMENet
                 TcpClient client = tcpListener.AcceptTcpClient();
                 SMEAsyncReceiver receiver = new SMEAsyncReceiver(client);
                 //waitList.Enqueue(receiver);
+                receiver.IP = ipAddress.ToString();
                 ThreadPool.QueueUserWorkItem(new WaitCallback(receiver.Receive));
 
             }
@@ -110,6 +111,8 @@ namespace SME.SMENet
         private TcpClient tcpClient = null;
         private int fileLength = 0;
         private string fileName;
+
+        public string IP { get; set; }
 
         private NetworkStream netStream;
         #endregion
@@ -175,7 +178,7 @@ namespace SME.SMENet
                 }
                 fileStream.Close();
 
-                DumpsDBM dumpsdbm = new DumpsDBM("Data Source=192.168.1.71;Initial Catalog=SME;User ID=SME;Password=bit1234");
+                DumpsDBM dumpsdbm = new DumpsDBM("Data Source=192.168.0.94;Initial Catalog=SME;User ID=SME;Password=bit1234");
                 
                 dumpsdbm.Insert(fileName, apikey);
 
@@ -186,11 +189,13 @@ namespace SME.SMENet
                     dbmanager = new SMEDBManager(fileName, did, apikey);
                 else if(filesel == 1)
                     dbmanager = new SMEDBManager(new SMEMiniDumpReader(fileName), did, apikey);
+
+                SME.Server.SMEServer.AfterR(IP, fileName, DateTime.Now.ToString());
                 
             }
             catch(Exception e)
             {
-                
+                System.Windows.Forms.MessageBox.Show(e.Message);
             }
             finally
             {

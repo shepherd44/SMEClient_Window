@@ -35,7 +35,7 @@ CMFCTestApp::CMFCTestApp()
 
 // 유일한 CMFCTestApp 개체입니다.
 
-CMFCTestApp theApp;
+extern CMFCTestApp theApp;
 
 
 // CMFCTestApp 초기화
@@ -49,20 +49,33 @@ bool ResultCallBack(const wchar_t* dump_path,
 	MDRawAssertionInfo* assertion,
 	bool succeeded)
 {
+	
 	// 서버 전송
-	wchar_t filepath[256];
-	memset(filepath, 0, 256);
-	wcscpy_s(filepath, dump_path);
-	wchar_t filename[256];
-	memset(filename, 0, 256);
-	wcscpy_s(filename, minidump_id);
+	//wchar_t filepath[256];
+	//memset(filepath, 0, 256);
+	//wcscpy_s(filepath, dump_path);
+	//wchar_t filename[256];
+	//memset(filename, 0, 256);
+	//wcscpy_s(filename, minidump_id);
 
-	wcscat_s(filename, L".dmp");
-	wcscat_s(filepath, filename);
+	//wcscat_s(filename, L".dmp");
+	//wcscat_s(filepath, filename);
 
-	theApp.DoMessageBox(filepath, NULL, MB_OK);
+	int nSize2 = wcslen(minidump_id) * 2 + 1 + 4;
+	int nSize = wcslen(dump_path) * 2 + 1 + nSize2;
+
+	char* filepath;
+	char* filename;
+	filepath = new char[nSize];
+	filename = new char[nSize2];
+	wcstombs(filepath, dump_path, nSize);
+	wcstombs(filename, minidump_id, nSize2);
+
+	strcat(filename, ".dmp");
+	strcat(filepath, filename);
+
 	Sender::TCPSender* sender = new Sender::TCPSender("127.0.0.1", 3000);
-	sender->Send(reinterpret_cast<char*>( filepath), reinterpret_cast<char*>( filename), g_apikey);
+	sender->Send(filepath, filename, g_apikey);
 	
 	return true;
 }

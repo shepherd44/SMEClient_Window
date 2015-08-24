@@ -198,10 +198,10 @@ namespace SME.SMECollect
             XMLFilePath = string.Format("{0}{1}", XMLFolderPath, XMLFileName);
         }
 
-        public async void SendToServer(string ServerIP, int ServerPort)
+        public async void SendToServer(string ServerIP, int ServerPort, int apikey)
         {
             SaveSemaphore.WaitOne();
-            TCPSender tcpsender = new TCPSender(ServerIP, ServerPort, XMLFilePath, XMLFileName, 10);
+            TCPSender tcpsender = new TCPSender(ServerIP, ServerPort, XMLFilePath, XMLFileName, apikey);
             //tcpsender.FileSend();
             //tcpsender.Dispose();
         }

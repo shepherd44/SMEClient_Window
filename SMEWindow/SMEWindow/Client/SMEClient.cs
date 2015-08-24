@@ -113,7 +113,7 @@ namespace SME.Client
             //파일 전송
             if (IsSend)
             {
-                smecollector.SendToServer(ServerIP, ServerPort);
+                smecollector.SendToServer(ServerIP, ServerPort, int.Parse(APIKEY));
             }
             
         }
@@ -139,7 +139,7 @@ namespace SME.Client
             if (IsSend)
             {
                 if (smecollector != null)
-                    smecollector.SendToServer(ServerIP, ServerPort);
+                    smecollector.SendToServer(ServerIP, ServerPort, int.Parse(APIKEY));
             }
         }
 
@@ -163,7 +163,7 @@ namespace SME.Client
             if(IsSend)
             {
                 if(smecollector != null)
-                    smecollector.SendToServer(ServerIP, ServerPort);
+                    smecollector.SendToServer(ServerIP, ServerPort, int.Parse(APIKEY));
             }
         }
     #endregion

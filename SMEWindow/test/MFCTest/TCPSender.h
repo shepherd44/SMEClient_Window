@@ -33,7 +33,7 @@ namespace Sender
 		void ErrorMsg(char* pch, char* msg, int ret);
 	public:
 		int Send(char* pmessage, int length);
-		int Send(FILE* pfile);
+		int Send(std::ifstream* inFile, char* pfilename, int apikey);
 		int Send(char* pfilepath, char* pfilename, int apikey);
 		void SetSocket(SOCKET socket);
 		void SetSocket(char* ip, int length);
