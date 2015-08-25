@@ -10,6 +10,7 @@ namespace SME.Server
     {
         #region Members
         //static ThreadPool m_ThreadPool;
+        public static String DBServerConnection { get; protected internal set; }
         static SMEListener listener;
         public static AfterReceive AfterR;
         #endregion
@@ -22,8 +23,9 @@ namespace SME.Server
         #endregion
 
         #region Methods
-        public static void Start(string ip, int port)
+        public static void Start(string ip, int port, string dbconn)
         {
+            DBServerConnection = dbconn;
             listener = new SMEListener(ip, port);
         }
 

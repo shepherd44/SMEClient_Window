@@ -16,7 +16,13 @@ namespace SMETestClient
         [STAThread]
         static void Main()
         {
-            SMEClient smeclient = new SMEClient("SMETestClient", null, true, false, "18", "127.0.0.1", 3000);
+            SMEClient smeclient = new SMEClient("SMETestClient",    // Project Name
+                                                null,               // Project Version
+                                                true,               // Native Exception Catch
+                                                false,              // Handled Exception Catch
+                                                "18",               // API Key
+                                                "127.0.0.1",        // Server IP
+                                                3000);              // Server Port
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

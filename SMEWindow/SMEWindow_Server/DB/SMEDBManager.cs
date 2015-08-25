@@ -289,7 +289,7 @@ namespace SME.DB
         {
             //SMEServer에서 덤프를 받아 DB에 저장할 때 데이터베이스로부터 Dump_ID를 받아오는 함수
 
-            string strConn = "Data Source=192.168.0.94;Initial Catalog=SME;User ID=SME;Password=bit1234";
+            string strConn = SME.Server.SMEServer.DBServerConnection;
             SqlConnection conn = new SqlConnection(strConn);
             string strCmd = "SELECT Dump_ID FROM Dumps";
             SqlCommand cmd = new SqlCommand(strCmd, conn);
@@ -305,7 +305,7 @@ namespace SME.DB
 
         public static void InsertDatabase(string Insert_Query_String)
         {
-            string strConn = "Data Source=192.168.0.94;Initial Catalog=SME;User ID=SME;Password=bit1234";
+            string strConn = SME.Server.SMEServer.DBServerConnection;
             SqlConnection conn = new SqlConnection(strConn);
             conn.Open();
             string strCmd = Insert_Query_String;
@@ -316,7 +316,7 @@ namespace SME.DB
 
         public int GetExcetpionID(int dumpid)
         {
-            string strConn = "Data Source=192.168.0.94;Initial Catalog=SME;User ID=SME;Password=bit1234";
+            string strConn = SME.Server.SMEServer.DBServerConnection;
             SqlConnection conn = new SqlConnection(strConn);
             string strCmd = "SELECT Exp_ID FROM ExceptionInfo WHERE DumpsDump_ID = '" + dumpid + "'";
             SqlCommand cmd = new SqlCommand(strCmd, conn);

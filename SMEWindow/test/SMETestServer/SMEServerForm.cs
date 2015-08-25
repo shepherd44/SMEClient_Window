@@ -24,7 +24,7 @@ namespace SMETestServer
         public SMEServerForm()
         {
             InitializeComponent();
-            SMEServer.Start("127.0.0.1", 3000);
+            SMEServer.Start("127.0.0.1", 3000, "Data Source=192.168.0.94;Initial Catalog=SME;User ID=SME;Password=bit1234");
             richTB_Main.Text += "Server Start";
             SMEServer.AfterR += invokef;
             Add += AddText;

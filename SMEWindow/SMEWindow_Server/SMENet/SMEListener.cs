@@ -178,7 +178,7 @@ namespace SME.SMENet
                 }
                 fileStream.Close();
 
-                DumpsDBM dumpsdbm = new DumpsDBM("Data Source=192.168.0.94;Initial Catalog=SME;User ID=SME;Password=bit1234");
+                DumpsDBM dumpsdbm = new DumpsDBM();
                 
                 dumpsdbm.Insert(fileName, apikey);
 

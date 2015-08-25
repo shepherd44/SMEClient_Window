@@ -13,9 +13,9 @@ namespace SME.DB
 	#endregion
 
     #region Constructors
-        public DumpsDBM(string connstr)
+        public DumpsDBM()
         {
-            ConnString = string.Format("{0}", connstr);
+            ConnString = string.Format("{0}", SME.Server.SMEServer.DBServerConnection);
             SQLConnection = new SqlConnection(ConnString);
             SQLConnection.Open();
         }
